@@ -1,5 +1,5 @@
-import Data.Char
-import Data.List
+import Data.Char (digitToInt)
+import Data.List (tails)
 
 slicesOf :: Int -> [Int] -> [Int]
 slicesOf n = map product . foldr (zipWith (:)) (repeat []) . take n . tails

@@ -1,4 +1,4 @@
-import Data.List.Ordered
+import Data.List.Ordered (minus)
 
 primesTo n = eratos [2 .. n]
   where
