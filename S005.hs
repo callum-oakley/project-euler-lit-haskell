@@ -1,1 +1,1 @@
-s005 = foldr lcm 1 [1 .. 20]
+s005 = foldl lcm 1 [1 .. 20]

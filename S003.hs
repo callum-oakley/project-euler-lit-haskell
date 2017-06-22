@@ -1,4 +1,4 @@
-primeFactors :: Int -> [Int]
+primeFactors :: Integer -> [Integer]
 primeFactors 1 = []
 primeFactors n = p : primeFactors (div n p)
   where
