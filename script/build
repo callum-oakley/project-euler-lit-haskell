@@ -1,9 +1,14 @@
 #! /bin/sh
 
-echo '<link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">' > index.html
+echo '<!doctype html>' > index.html
+echo '<html>' >> index.html
+echo '<head>' >> index.html
+echo '<title>Project Euler</title>' >> index.html
+echo '<link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">' >> index.html
 echo '<link rel="stylesheet" href="style.css">' >> index.html
-echo '<body>\n<h1>Project Euler</h1>' >> index.html
-
+echo '</head>' >> index.html
+echo '<body>' >> index.html
+echo '<h1>Project Euler</h1>' >> index.html
 for n in `ls src | grep '\.lhs' | cut -d '.' -f 1`; do
   echo '<div class="solution" id="'$n'">' >> index.html
   echo '<h2><a href="#'$n'"><span class="hash"># </span>'$n'</a></h2>' >> index.html
@@ -11,3 +16,4 @@ for n in `ls src | grep '\.lhs' | cut -d '.' -f 1`; do
   echo '</div>' >> index.html
 done
 echo '</body>' >> index.html
+echo '</html>' >> index.html
