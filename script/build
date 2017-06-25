@@ -1,0 +1,13 @@
+#! /bin/sh
+
+echo '<link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">' > target/index.html
+echo '<link rel="stylesheet" href="style.css">' >> target/index.html
+echo '<body>\n<h1>Project Euler</h1>' >> target/index.html
+
+for n in `ls src | grep '\.lhs' | cut -d '.' -f 1`; do
+  echo '<div class="solution" id="'$n'">' >> target/index.html
+  echo '<h2><a href="#'$n'"><span class="hash"># </span>'$n'</a></h2>' >> target/index.html
+  pandoc -f markdown+lhs -t html src/$n.lhs >> target/index.html
+  echo '</div>' >> target/index.html
+done
+echo '</body>' >> target/index.html

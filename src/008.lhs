@@ -13,4 +13,4 @@ product of the slices.
 
 > s008 =
 >   maximum . map product . slicesOf 13 . map digitToInt . concat . lines <$>
->   readFile "data-008"
+>   readFile "data/008"
