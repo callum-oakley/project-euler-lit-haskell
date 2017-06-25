@@ -1,5 +1,5 @@
-Assume wlog that `a <= b <= c`, and then find all such triplets with a list
-comprehension.
+Assume without loss of generality that `a <= b <= c`, and then find all such
+triplets with a list comprehension.
 
 > tripletsWithPerimeter :: Integer -> [[Integer]]
 > tripletsWithPerimeter n =

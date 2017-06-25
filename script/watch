@@ -1,3 +1,3 @@
 #! /bin/sh
 
-ls src/*.lhs script/build | entr -s 'script/build'
+ls src/*.lhs script/build | entr -s 'script/build > index.html'

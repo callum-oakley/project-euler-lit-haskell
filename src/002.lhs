@@ -1,4 +1,5 @@
-Pick your favourite fibs definition from [the Haskell wiki](https://wiki.haskell.org/The_Fibonacci_sequence).
+Pick your favourite `fibs` definition from
+[the Haskell wiki](https://wiki.haskell.org/The_Fibonacci_sequence).
 
 > fibs :: [Integer]
 > fibs = 0 : scanl (+) 1 fibs

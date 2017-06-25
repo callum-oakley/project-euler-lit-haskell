@@ -1,9 +1,9 @@
 > import Data.Char (digitToInt)
 > import Data.List (tails)
 
-First we define a function that returns "slices" of length n from a list.
+First we define a function that returns "slices" of length `n` from a list.
 e.g. `slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]`. By taking the
-first n `tails` and then zipping them together.
+first `n` `tails` and then zipping them together.
 
 > slicesOf :: Int -> [a] -> [[a]]
 > slicesOf n = foldr (zipWith (:)) (repeat []) . take n . tails

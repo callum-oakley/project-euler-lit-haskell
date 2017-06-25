@@ -1,6 +1,6 @@
-We calculate the prime factors of n recursively, finding the smallest divisor
-at each stage. (The smallest divisor is necessarily prime, otherwise it is pq
-for some prime p, and p is a smaller divisor. Contradiction.)
+We calculate the prime factors of `n` recursively, finding the smallest divisor
+at each stage. (The smallest divisor is necessarily prime, otherwise it is `pq`
+for some prime `p` and some `q > 1`, and `p` is a smaller divisor. Contradiction.)
 
 > primeFactors :: Integer -> [Integer]
 > primeFactors 1 = []

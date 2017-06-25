@@ -1,6 +1,5 @@
 body {
   font-family: "Source Serif Pro", serif;
-  font-size: 1rem;
   line-height: 1.5;
   max-width: 700px;
   border: transparent solid 30px;
@@ -19,6 +18,8 @@ h1 {
 h2 {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1.5rem;
+  display: inline;
+  float: bottom;
 }
 
 h2 a {
@@ -36,16 +37,23 @@ h2:hover span.hash {
   visibility: visible;
 }
 
-p a:link {
+.statement a {
+  display: inline;
+  float: right;
+  font-size: 0.875rem;
+  margin-top: 0.4rem;
+}
+
+p a:link, .statement a:link {
   color: #4070a0;
   text-decoration: none;
 }
 
-p a:hover {
+p a:hover, .statement a:hover {
   text-decoration: underline;
 }
 
-p a:active {
+p a:active, .statement a:active {
   color: #205080;
 }
 
