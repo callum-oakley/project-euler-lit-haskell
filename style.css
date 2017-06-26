@@ -41,8 +41,8 @@ h2:hover span.hash {
 .statement a {
   display: inline;
   float: right;
-  font-size: 0.875rem;
-  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 p a:link, .statement a:link {
