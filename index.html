@@ -1,136 +1,137 @@
 <!doctype html>
 <html>
 <head>
-<title>Project Euler</title>
-<link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <title>Project Euler</title>
+  <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Project Euler</h1>
-<div class="solution" id="001">
-<div class="solution-title">
-<h2><a href="#001"><span class="hash"># </span>001</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=001">[statement]</a></span>
-</div>
-<p>This can be solved in constant time with some closed sum formulae, but the obvious list comprehension is super neat and plenty fast.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s001 <span class="fu">=</span> sum [n <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">999</span>], mod n <span class="dv">3</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">||</span> mod n <span class="dv">5</span> <span class="fu">==</span> <span class="dv">0</span>]</code></pre></div>
-</div>
-<div class="solution" id="002">
-<div class="solution-title">
-<h2><a href="#002"><span class="hash"># </span>002</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=002">[statement]</a></span>
-</div>
-<p>Pick your favourite <code>fibs</code> definition from <a href="https://wiki.haskell.org/The_Fibonacci_sequence">the Haskell wiki</a>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">fibs ::</span> [<span class="dt">Integer</span>]
-fibs <span class="fu">=</span> <span class="dv">0</span> <span class="fu">:</span> scanl (<span class="fu">+</span>) <span class="dv">1</span> fibs</code></pre></div>
-<p>The self reference works here because <code>scanl</code> is only ever consuming values of <code>fibs</code> that we have already calculated. Once we have all the fibbonacci numbers the solution is trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s002 <span class="fu">=</span> sum <span class="fu">$</span> filter even <span class="fu">$</span> takeWhile (<span class="fu">&lt;=</span> <span class="dv">4</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span>) fibs</code></pre></div>
-</div>
-<div class="solution" id="003">
-<div class="solution-title">
-<h2><a href="#003"><span class="hash"># </span>003</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=003">[statement]</a></span>
-</div>
-<p>We calculate the prime factors of <code>n</code> recursively, finding the smallest divisor at each stage. (The smallest divisor is necessarily prime, otherwise it is <code>pq</code> for some prime <code>p</code> and some <code>q &gt; 1</code>, and <code>p</code> is a smaller divisor. Contradiction.)</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primeFactors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-primeFactors <span class="dv">1</span> <span class="fu">=</span> []
-primeFactors n <span class="fu">=</span> p <span class="fu">:</span> primeFactors (div n p)
-  <span class="kw">where</span>
-    p <span class="fu">=</span> head <span class="fu">$</span> filter (\d <span class="ot">-&gt;</span> mod n d <span class="fu">==</span> <span class="dv">0</span>) [<span class="dv">2</span> <span class="fu">..</span>]</code></pre></div>
-<p>Given this, the final solution is trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s003 <span class="fu">=</span> maximum <span class="fu">$</span> primeFactors <span class="dv">600851475143</span></code></pre></div>
-</div>
-<div class="solution" id="004">
-<div class="solution-title">
-<h2><a href="#004"><span class="hash"># </span>004</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=004">[statement]</a></span>
-</div>
-<p>The <code>reverse</code> builtin makes writing an <code>isPalindromic</code> function trivial for any type implementing <code>Show</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">isPalindromic ::</span> <span class="dt">Show</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
-isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (reverse <span class="fu">.</span> show) x</code></pre></div>
-<p>The only minor optimisation worth note here is assuming without loss of generality that <code>x &lt;= y</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s004 <span class="fu">=</span>
-  maximum <span class="fu">$</span> filter isPalindromic [x <span class="fu">*</span> y <span class="fu">|</span> x <span class="ot">&lt;-</span> [<span class="dv">100</span> <span class="fu">..</span> <span class="dv">999</span>], y <span class="ot">&lt;-</span> [x <span class="fu">..</span> <span class="dv">999</span>]]</code></pre></div>
-</div>
-<div class="solution" id="005">
-<div class="solution-title">
-<h2><a href="#005"><span class="hash"># </span>005</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=005">[statement]</a></span>
-</div>
-<p>Rewording the question, we want the lowest common multiple of all the numbers <code>[1 .. 20]</code>, and since <code>lcm x y z = lcm x (lcm y z)</code> (abusing notation a little here) we can just fold with <code>lcm</code>!</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s005 <span class="fu">=</span> foldl lcm <span class="dv">1</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">20</span>]</code></pre></div>
-</div>
-<div class="solution" id="006">
-<div class="solution-title">
-<h2><a href="#006"><span class="hash"># </span>006</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=006">[statement]</a></span>
-</div>
-<p>This is just a direct translation of the statement of the question in to valid Haskell.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s006 <span class="fu">=</span> sum [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>] <span class="fu">^</span> <span class="dv">2</span> <span class="fu">-</span> sum [n <span class="fu">^</span> <span class="dv">2</span> <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>]]</code></pre></div>
-</div>
-<div class="solution" id="007">
-<div class="solution-title">
-<h2><a href="#007"><span class="hash"># </span>007</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=007">[statement]</a></span>
-</div>
-<p>We'll make use of the <a href="https://hackage.haskell.org/package/data-ordlist-0.4.7.0/docs/Data-List-Ordered.html">Data.List.Ordered</a> package; <code>minus</code> is an optimised version of <code>(\\)</code> from <code>Data.List</code> which assumes its operands are ordered.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
-<p>The definition of <code>primesTo</code> comes from <a href="https://wiki.haskell.org/Prime_numbers">the Haskell wiki</a>. This one strikes a nice balance between speed and readability (there are many more optimisations that could be made, at the expense of the latter).</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span class="fu">..</span> n]
-  <span class="kw">where</span>
-    eratos [] <span class="fu">=</span> []
-    eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
-<p>Note in particular that for each prime found we start eliminating multiples at <code>p ^ 2</code>, since any smaller multiples must have another prime factor smaller than <code>p</code>, and so will have already been removed.</p>
-<p>A sufficient number of primes to generate (<code>2 ^ 17</code>) was found manually by trial and error. A more robust solution would use some calculated bound.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s007 <span class="fu">=</span> primesTo (<span class="dv">2</span> <span class="fu">^</span> <span class="dv">17</span>) <span class="fu">!!</span> <span class="dv">10000</span></code></pre></div>
-</div>
-<div class="solution" id="008">
-<div class="solution-title">
-<h2><a href="#008"><span class="hash"># </span>008</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=008">[statement]</a></span>
-</div>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
-<span class="kw">import </span><span class="dt">Data.List</span> (tails)</code></pre></div>
-<p>First we define a function that returns &quot;slices&quot; of length <code>n</code> from a list. e.g. <code>slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]</code>. By taking the first <code>n</code> <code>tails</code> and then zipping them together.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">slicesOf ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[a]]
-slicesOf n <span class="fu">=</span> foldr (zipWith (<span class="fu">:</span>)) (repeat []) <span class="fu">.</span> take n <span class="fu">.</span> tails</code></pre></div>
-<p>The rest of the solution is plumbing to read the input, and to get the largest product of the slices.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s008 <span class="fu">=</span>
-  maximum <span class="fu">.</span> map product <span class="fu">.</span> slicesOf <span class="dv">13</span> <span class="fu">.</span> map digitToInt <span class="fu">.</span> concat <span class="fu">.</span> lines <span class="fu">&lt;$&gt;</span>
-  readFile <span class="st">&quot;data/008&quot;</span></code></pre></div>
-</div>
-<div class="solution" id="009">
-<div class="solution-title">
-<h2><a href="#009"><span class="hash"># </span>009</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=009">[statement]</a></span>
-</div>
-<p>Assume without loss of generality that <code>a &lt;= b &lt;= c</code>, and then find all such triplets with a list comprehension.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">tripletsWithPerimeter ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [[<span class="dt">Integer</span>]]
-tripletsWithPerimeter n <span class="fu">=</span>
-  [ [a, b, c]
-  <span class="fu">|</span> a <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> n]
-  , b <span class="ot">&lt;-</span> [a <span class="fu">..</span> n]
-  , <span class="kw">let</span> c <span class="fu">=</span> n <span class="fu">-</span> a <span class="fu">-</span> b
-  , c <span class="fu">&gt;=</span> b
-  , a <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> b <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> c <span class="fu">^</span> <span class="dv">2</span>
-  ]</code></pre></div>
-<p>Trust the question and extract our single match with <code>head</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s009 <span class="fu">=</span> product <span class="fu">$</span> head <span class="fu">$</span> tripletsWithPerimeter <span class="dv">1000</span></code></pre></div>
-</div>
-<div class="solution" id="010">
-<div class="solution-title">
-<h2><a href="#010"><span class="hash"># </span>010</a></h2>
-<span class="statement"><a href="https://projecteuler.net/problem=010">[statement]</a></span>
-</div>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span class="fu">..</span> n]
-  <span class="kw">where</span>
-    eratos [] <span class="fu">=</span> []
-    eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
-<p>Using our same <code>primesTo</code> function as in <a href="#007">problem 007</a>, the solution is trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s010 <span class="fu">=</span> sum <span class="fu">$</span> primesTo <span class="fu">$</span> <span class="dv">2</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
-</div>
+  <h1>Project Euler</h1>
+  <p>Solutions to the problems on <a href="https://projecteuler.net/">projecteuler.net</a> written in <a href="https://wiki.haskell.org/Literate_programming">Literate Haskell</a>. Source can be found <a href="https://github.com/hot-leaf-juice/project-euler/tree/master/src">here</a>. Clone it and feed it to <code>ghci</code>!</p>
+  <div class="solution" id="001">
+    <div class="solution-title">
+      <h2><a href="#001"><span class="hash"># </span>001</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=001">[statement]</a></span>
+    </div>
+     <p>This can be solved in constant time with some closed sum formulae, but the obvious list comprehension is super neat and plenty fast.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s001 <span class="fu">=</span> sum [n <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">999</span>], mod n <span class="dv">3</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">||</span> mod n <span class="dv">5</span> <span class="fu">==</span> <span class="dv">0</span>]</code></pre></div>
+  </div>
+  <div class="solution" id="002">
+    <div class="solution-title">
+      <h2><a href="#002"><span class="hash"># </span>002</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=002">[statement]</a></span>
+    </div>
+     <p>Pick your favourite <code>fibs</code> definition from <a href="https://wiki.haskell.org/The_Fibonacci_sequence">the Haskell wiki</a>.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">fibs ::</span> [<span class="dt">Integer</span>]
+     fibs <span class="fu">=</span> <span class="dv">0</span> <span class="fu">:</span> scanl (<span class="fu">+</span>) <span class="dv">1</span> fibs</code></pre></div>
+     <p>The self reference works here because <code>scanl</code> is only ever consuming values of <code>fibs</code> that we have already calculated. Once we have all the fibbonacci numbers the solution is trivial.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s002 <span class="fu">=</span> sum <span class="fu">$</span> filter even <span class="fu">$</span> takeWhile (<span class="fu">&lt;=</span> <span class="dv">4</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span>) fibs</code></pre></div>
+  </div>
+  <div class="solution" id="003">
+    <div class="solution-title">
+      <h2><a href="#003"><span class="hash"># </span>003</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=003">[statement]</a></span>
+    </div>
+     <p>We calculate the prime factors of <code>n</code> recursively, finding the smallest divisor at each stage. (The smallest divisor is necessarily prime, otherwise it is <code>pq</code> for some prime <code>p</code> and some <code>q &gt; 1</code>, and <code>p</code> is a smaller divisor. Contradiction.)</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primeFactors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
+     primeFactors <span class="dv">1</span> <span class="fu">=</span> []
+     primeFactors n <span class="fu">=</span> p <span class="fu">:</span> primeFactors (div n p)
+       <span class="kw">where</span>
+         p <span class="fu">=</span> head <span class="fu">$</span> filter (\d <span class="ot">-&gt;</span> mod n d <span class="fu">==</span> <span class="dv">0</span>) [<span class="dv">2</span> <span class="fu">..</span>]</code></pre></div>
+     <p>Given this, the final solution is trivial.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s003 <span class="fu">=</span> maximum <span class="fu">$</span> primeFactors <span class="dv">600851475143</span></code></pre></div>
+  </div>
+  <div class="solution" id="004">
+    <div class="solution-title">
+      <h2><a href="#004"><span class="hash"># </span>004</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=004">[statement]</a></span>
+    </div>
+     <p>The <code>reverse</code> builtin makes writing an <code>isPalindromic</code> function trivial for any type implementing <code>Show</code>.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">isPalindromic ::</span> <span class="dt">Show</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+     isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (reverse <span class="fu">.</span> show) x</code></pre></div>
+     <p>The only minor optimisation worth note here is assuming without loss of generality that <code>x &lt;= y</code>.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s004 <span class="fu">=</span>
+       maximum <span class="fu">$</span> filter isPalindromic [x <span class="fu">*</span> y <span class="fu">|</span> x <span class="ot">&lt;-</span> [<span class="dv">100</span> <span class="fu">..</span> <span class="dv">999</span>], y <span class="ot">&lt;-</span> [x <span class="fu">..</span> <span class="dv">999</span>]]</code></pre></div>
+  </div>
+  <div class="solution" id="005">
+    <div class="solution-title">
+      <h2><a href="#005"><span class="hash"># </span>005</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=005">[statement]</a></span>
+    </div>
+     <p>Rewording the question, we want the lowest common multiple of all the numbers <code>[1 .. 20]</code>, and since <code>lcm x y z = lcm x (lcm y z)</code> (abusing notation a little here) we can just fold with <code>lcm</code>!</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s005 <span class="fu">=</span> foldl lcm <span class="dv">1</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">20</span>]</code></pre></div>
+  </div>
+  <div class="solution" id="006">
+    <div class="solution-title">
+      <h2><a href="#006"><span class="hash"># </span>006</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=006">[statement]</a></span>
+    </div>
+     <p>This is just a direct translation of the statement of the question in to valid Haskell.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s006 <span class="fu">=</span> sum [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>] <span class="fu">^</span> <span class="dv">2</span> <span class="fu">-</span> sum [n <span class="fu">^</span> <span class="dv">2</span> <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>]]</code></pre></div>
+  </div>
+  <div class="solution" id="007">
+    <div class="solution-title">
+      <h2><a href="#007"><span class="hash"># </span>007</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=007">[statement]</a></span>
+    </div>
+     <p>We'll make use of the <a href="https://hackage.haskell.org/package/data-ordlist-0.4.7.0/docs/Data-List-Ordered.html">Data.List.Ordered</a> package; <code>minus</code> is an optimised version of <code>(\\)</code> from <code>Data.List</code> which assumes its operands are ordered.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
+     <p>The definition of <code>primesTo</code> comes from <a href="https://wiki.haskell.org/Prime_numbers">the Haskell wiki</a>. This one strikes a nice balance between speed and readability (there are many more optimisations that could be made, at the expense of the latter).</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
+     primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span class="fu">..</span> n]
+       <span class="kw">where</span>
+         eratos [] <span class="fu">=</span> []
+         eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
+     <p>Note in particular that for each prime found we start eliminating multiples at <code>p ^ 2</code>, since any smaller multiples must have another prime factor smaller than <code>p</code>, and so will have already been removed.</p>
+     <p>A sufficient number of primes to generate (<code>2 ^ 17</code>) was found manually by trial and error. A more robust solution would use some calculated bound.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s007 <span class="fu">=</span> primesTo (<span class="dv">2</span> <span class="fu">^</span> <span class="dv">17</span>) <span class="fu">!!</span> <span class="dv">10000</span></code></pre></div>
+  </div>
+  <div class="solution" id="008">
+    <div class="solution-title">
+      <h2><a href="#008"><span class="hash"># </span>008</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=008">[statement]</a></span>
+    </div>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
+     <span class="kw">import </span><span class="dt">Data.List</span> (tails)</code></pre></div>
+     <p>First we define a function that returns &quot;slices&quot; of length <code>n</code> from a list. e.g. <code>slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]</code>. By taking the first <code>n</code> <code>tails</code> and then zipping them together.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">slicesOf ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[a]]
+     slicesOf n <span class="fu">=</span> foldr (zipWith (<span class="fu">:</span>)) (repeat []) <span class="fu">.</span> take n <span class="fu">.</span> tails</code></pre></div>
+     <p>The rest of the solution is plumbing to read the input, and to get the largest product of the slices.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s008 <span class="fu">=</span>
+       maximum <span class="fu">.</span> map product <span class="fu">.</span> slicesOf <span class="dv">13</span> <span class="fu">.</span> map digitToInt <span class="fu">.</span> concat <span class="fu">.</span> lines <span class="fu">&lt;$&gt;</span>
+       readFile <span class="st">&quot;data/008&quot;</span></code></pre></div>
+  </div>
+  <div class="solution" id="009">
+    <div class="solution-title">
+      <h2><a href="#009"><span class="hash"># </span>009</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=009">[statement]</a></span>
+    </div>
+     <p>Assume without loss of generality that <code>a &lt;= b &lt;= c</code>, and then find all such triplets with a list comprehension.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">tripletsWithPerimeter ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [[<span class="dt">Integer</span>]]
+     tripletsWithPerimeter n <span class="fu">=</span>
+       [ [a, b, c]
+       <span class="fu">|</span> a <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> n]
+       , b <span class="ot">&lt;-</span> [a <span class="fu">..</span> n]
+       , <span class="kw">let</span> c <span class="fu">=</span> n <span class="fu">-</span> a <span class="fu">-</span> b
+       , c <span class="fu">&gt;=</span> b
+       , a <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> b <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> c <span class="fu">^</span> <span class="dv">2</span>
+       ]</code></pre></div>
+     <p>Trust the question and extract our single match with <code>head</code>.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s009 <span class="fu">=</span> product <span class="fu">$</span> head <span class="fu">$</span> tripletsWithPerimeter <span class="dv">1000</span></code></pre></div>
+  </div>
+  <div class="solution" id="010">
+    <div class="solution-title">
+      <h2><a href="#010"><span class="hash"># </span>010</a></h2>
+      <span class="statement"><a href="https://projecteuler.net/problem=010">[statement]</a></span>
+    </div>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
+     primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span class="fu">..</span> n]
+       <span class="kw">where</span>
+         eratos [] <span class="fu">=</span> []
+         eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
+     <p>Using our same <code>primesTo</code> function as in <a href="#007">problem 007</a>, the solution is trivial.</p>
+     <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s010 <span class="fu">=</span> sum <span class="fu">$</span> primesTo <span class="fu">$</span> <span class="dv">2</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
+  </div>
 </body>
 </html>
