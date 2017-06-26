@@ -73,7 +73,7 @@ isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (rev
 <h2><a href="#007"><span class="hash"># </span>007</a></h2>
 <span class="statement"><a href="https://projecteuler.net/problem=007">[statement]</a></span>
 </div>
-<p><code>minus</code> is an optimised version of <code>(\\)</code> from <code>Data.List</code> which assumes its operands are ordered.</p>
+<p>We'll make use of the <a href="https://hackage.haskell.org/package/data-ordlist-0.4.7.0/docs/Data-List-Ordered.html">Data.List.Ordered</a> package; <code>minus</code> is an optimised version of <code>(\\)</code> from <code>Data.List</code> which assumes its operands are ordered.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
 <p>The definition of <code>primesTo</code> comes from <a href="https://wiki.haskell.org/Prime_numbers">the Haskell wiki</a>. This one strikes a nice balance between speed and readability (there are many more optimisations that could be made, at the expense of the latter).</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]

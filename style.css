@@ -12,7 +12,8 @@ h1 {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 2rem;
   text-align: center;
-  margin-top: 3em;
+  padding-top: 3em;
+  padding-bottom: 1.5em;
 }
 
 h2 {
@@ -67,6 +68,7 @@ pre, code {
 }
 
 .solution {
-  padding-top: 3em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 
