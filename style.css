@@ -59,6 +59,7 @@ p a:active, .statement a:active {
 
 pre {
   padding: 10px 20px;
+  overflow: scroll;
 }
 
 pre, code {
