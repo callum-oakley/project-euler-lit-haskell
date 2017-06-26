@@ -1,24 +1,29 @@
+import json
 from os import listdir
 from pypandoc import convert_file
 
 title = "Project Euler – Literate Haskell"
 fonts = "https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro"
 style = "style.css"
-intro = "<p>Solutions to the problems on <a href='https://projecteuler.net/'>projecteuler.net</a> written in <a href='https://wiki.haskell.org/Literate_programming'>Literate Haskell</a>. Source can be found <a href='https://github.com/hot-leaf-juice/project-euler/tree/master/src'>here</a>. Clone it and feed it to <code>ghci</code>!</p>" # TODO compile this from some markdown
+intro = "resources/intro.md"
+problemTitles = json.loads(open("resources/titles.json").read())
+
+def html(elements):
+  return "".join(elements)
 
 def renderSolution(n):
-  return "\n".join([
+  return html([
     "<div class='solution' id='{}'>".format(n),
       "<div class='solution-title'>",
         "<h2>",
           "<a href='#{}'>".format(n),
           "<span class='hash'># </span>",
-          n,
+          problemTitles[int(n) - 1],
           "</a>",
         "</h2>",
         "<span class='statement'>",
           "<a href='https://projecteuler.net/problem={}'>".format(n),
-            "[statement]",
+            "[{}]".format(n),
           "</a>",
         "</span>",
       "</div>",
@@ -27,7 +32,7 @@ def renderSolution(n):
   ])
 
 def render():
-  html = "\n".join([
+  return html([
     "<!doctype html>",
     "<html>",
     "<head>",
@@ -37,11 +42,14 @@ def render():
     "</head>",
     "<body>",
       "<h1>{}</h1>".format(title),
-      "<div class='intro'>{}</div>".format(intro),
+      "<div class='intro'>{}</div>".format(
+        convert_file(intro, "html")
+      ),
+      html(renderSolution(n) for n in [
+        f.split(".")[0] for f in listdir("src") if f.endswith(".lhs")
+      ]),
+    "</body>",
+    "</html>",
   ])
-  for n in [f.split(".")[0] for f in listdir("src") if f.endswith(".lhs")]:
-    html += renderSolution(n)
-  html += "</body>\n</html>"
-  return html
 
 print(render())
