@@ -1,0 +1,4 @@
+#! /bin/sh
+
+ls src/*.lhs resources/* scripts/build.py |
+  entr -s '/usr/local/bin/python3 scripts/build.py > index.html'
