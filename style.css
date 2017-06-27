@@ -1,26 +1,29 @@
 body {
-  font-family: "Source Serif Pro", serif;
-  line-height: 1.5;
-  max-width: 700px;
-  margin: auto;
   background-color: #f5f5f5;
   color: #141414;
+  font-family: "Source Serif Pro", serif;
+  line-height: 1.5;
+  margin: auto;
+  max-width: 700px;
 }
 
 h1 {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 2rem;
   font-weight: normal;
-  text-align: center;
-  padding-top: 3em;
   padding-bottom: 1.5em;
+  padding-top: 3em;
+  text-align: center;
+}
+
+.solution-title {
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 h2 {
-  font-family: "Source Sans Pro", sans-serif;
+  display: inline;
   font-size: 1.5rem;
   font-weight: normal;
-  display: inline;
 }
 
 h2 a {
@@ -28,9 +31,9 @@ h2 a {
 }
 
 .hash {
-  margin-left: -18px;
-  display: inline;
   color: #4070a0;
+  display: inline;
+  margin-left: -18px;
   visibility: hidden;
 }
 
@@ -42,7 +45,6 @@ h2:hover span.hash {
   display: inline;
   float: right;
   padding-top: 0.4rem;
-  font-family: "Source Sans Pro", sans-serif;
 }
 
 p a:link, .statement a:link {
@@ -59,8 +61,8 @@ p a:active, .statement a:active {
 }
 
 pre {
-  padding: 10px 20px;
   overflow: scroll;
+  padding: 10px 20px;
 }
 
 pre, code {
@@ -69,7 +71,6 @@ pre, code {
 }
 
 .intro, .solution {
-  padding-top: 1.5em;
   padding-bottom: 1.5em;
+  padding-top: 1.5em;
 }
-
