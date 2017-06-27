@@ -36,7 +36,7 @@ def render():
     "<!doctype html>",
     "<html>",
     "<head>",
-      "<meta name='viewport' content='width=device-width'>",
+      "<meta name='viewport' content='width=device-width, initial-scale=1'>",
       "<title>{}</title>".format(title),
       "<link href='{}' rel='stylesheet'>".format(fonts),
       "<link href='{}' rel='stylesheet'>".format(style),
