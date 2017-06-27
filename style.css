@@ -6,6 +6,9 @@ body {
   margin: auto;
   max-width: 700px;
   padding: 1rem;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: 100%;
 }
 
 h1 {
