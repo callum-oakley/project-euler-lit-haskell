@@ -1,6 +1,4 @@
-import json
-from os import listdir
-from pypandoc import convert_file
+import json, os, pypandoc
 
 title = "Project Euler Solutions"
 fonts = "https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro"
@@ -27,7 +25,11 @@ def renderSolution(n):
           "</a>",
         "</span>",
       "</div>",
-      convert_file("src/{}.lhs".format(n), "html", format="markdown+lhs"),
+      pypandoc.convert_file(
+        "src/{}.lhs".format(n),
+        "html",
+        format="markdown+lhs"
+      ),
     "</div>",
   ])
 
@@ -44,10 +46,10 @@ def render():
     "<body>",
       "<h1>{}</h1>".format(title),
       "<div class='intro'>{}</div>".format(
-        convert_file(intro, "html")
+        pypandoc.convert_file(intro, "html")
       ),
       html(renderSolution(n) for n in [
-        f.split(".")[0] for f in listdir("src") if f.endswith(".lhs")
+        f.split(".")[0] for f in os.listdir("src") if f.endswith(".lhs")
       ]),
     "</body>",
     "</html>",
