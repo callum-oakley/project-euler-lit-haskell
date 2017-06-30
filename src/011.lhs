@@ -1,3 +1,5 @@
+WIP
+
 > import Data.Array (Array, array, listArray)
 
 > grid :: IO (Array (Int, Int) Integer)

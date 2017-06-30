@@ -64,4 +64,12 @@ primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span cla
     eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
 <p>Using our same <code>primesTo</code> function as in <a href="#007">problem 007</a>, the solution is trivial.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s010 <span class="fu">=</span> sum <span class="fu">$</span> primesTo <span class="fu">$</span> <span class="dv">2</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
+</div><div class='solution' id='011'><div class='solution-title'><h2><a href='#011'><span class='hash'># </span>Largest product in a grid</a></h2><span class='statement'><a href='https://projecteuler.net/problem=011'>[011]</a></span></div><p>WIP</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, array, listArray)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">grid ::</span> <span class="dt">IO</span> (<span class="dt">Array</span> (<span class="dt">Int</span>, <span class="dt">Int</span>) <span class="dt">Integer</span>)
+grid <span class="fu">=</span> parse <span class="fu">&lt;$&gt;</span> readFile <span class="st">&quot;data/011&quot;</span>
+  <span class="kw">where</span>
+    indices <span class="fu">=</span> ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">19</span>, <span class="dv">19</span>))
+    parse <span class="fu">=</span> listArray indices <span class="fu">.</span> map read <span class="fu">.</span> concatMap words <span class="fu">.</span> lines</code></pre></div>
+<p>Make three arrays containing horizontal, vertical, and diagonal products, then simply find the maximum element of the three.</p>
 </div></body></html>
