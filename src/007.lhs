@@ -1,5 +1,5 @@
 We'll make use of the
-[Data.List.Ordered](https://hackage.haskell.org/package/data-ordlist-0.4.7.0/docs/Data-List-Ordered.html)
+[`Data.List.Ordered`](https://hackage.haskell.org/package/data-ordlist-0.4.7.0/docs/Data-List-Ordered.html)
 package; `minus` is an optimised version of `(\\)` from `Data.List` which
 assumes its operands are ordered.
 

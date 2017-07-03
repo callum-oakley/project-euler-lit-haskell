@@ -2,8 +2,11 @@
 > import Data.List (tails)
 
 First we define a function that returns "slices" of length `n` from a list.
-e.g. `slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]`. By taking the
-first `n` `tails` and then zipping them together.
+e.g.
+
+    slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+
+By taking the first `n` `tails` and then zipping them together.
 
 > slicesOf :: Int -> [a] -> [[a]]
 > slicesOf n = foldr (zipWith (:)) (repeat []) . take n . tails
@@ -11,6 +14,7 @@ first `n` `tails` and then zipping them together.
 The rest of the solution is plumbing to read the input, and to get the largest
 product of the slices.
 
-> s008 =
->   maximum . map product . slicesOf 13 . map digitToInt . concat . lines <$>
->   readFile "data/008"
+> s008 = do
+>   raw <- readFile "data/008"
+>   let grid = map digitToInt $ concat $ lines raw
+>   return $ maximum $ map product $ slicesOf 13 grid

@@ -1,7 +1,7 @@
 import json, os, pypandoc
 
 title = "Project Euler Solutions"
-fonts = "https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro"
+fonts = "https://fonts.googleapis.com/css?family=Cinzel|Source+Sans+Pro|Source+Serif+Pro|Source+Code+Pro"
 style = "style.css"
 intro = "resources/intro.md"
 problemTitles = json.loads(open("resources/titles.json").read())
@@ -12,23 +12,18 @@ def html(elements):
 def renderSolution(n):
   return html([
     "<div class='solution' id='{}'>".format(n),
-      "<div class='solution-title'>",
-        "<h2>",
-          "<a href='#{}'>".format(n),
-            "<span class='hash'># </span>",
-            problemTitles[n],
-          "</a>",
-        "</h2>",
-        "<span class='statement'>",
-          "<a href='https://projecteuler.net/problem={}'>".format(n),
-            "[{}]".format(n),
-          "</a>",
-        "</span>",
-      "</div>",
+      "<h2>",
+        "<a class='problem-title' href='#{}'>".format(n),
+          "<span class='hash'># </span>",
+          problemTitles[n],
+        "</a>",
+        "<a class='problem-statement' href='https://projecteuler.net/problem={}'>{}</a>".format(n, n),
+      "</h2>",
       pypandoc.convert_file(
         "src/{}.lhs".format(n),
         "html",
-        format="markdown+lhs"
+        format="markdown+lhs",
+        extra_args=["--smart"]
       ),
     "</div>",
   ])
@@ -46,7 +41,7 @@ def render():
     "<body>",
       "<h1>{}</h1>".format(title),
       "<div class='intro'>{}</div>".format(
-        pypandoc.convert_file(intro, "html")
+        pypandoc.convert_file(intro, "html", extra_args=["--smart"])
       ),
       html(renderSolution(n) for n in [
         f.split(".")[0] for f in os.listdir("src") if f.endswith(".lhs")

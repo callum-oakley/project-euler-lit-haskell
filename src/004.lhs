@@ -7,5 +7,8 @@ type implementing `Show`.
 The only minor optimisation worth note here is assuming without loss of
 generality that `x <= y`.
 
-> s004 =
->   maximum $ filter isPalindromic [x * y | x <- [100 .. 999], y <- [x .. 999]]
+> s004 = maximum $ filter isPalindromic
+>   [ x * y
+>   | x <- [100 .. 999]
+>   , y <- [x .. 999]
+>   ]
