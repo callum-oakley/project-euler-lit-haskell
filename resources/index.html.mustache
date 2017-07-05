@@ -2,23 +2,26 @@
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <title>{{title}}</title>
-  <link href='{{fonts}}' rel='stylesheet'>
-  <link href='{{style}}' rel='stylesheet'>
+  <title>Project Euler Solutions</title>
+  <link href='https://fonts.googleapis.com/css?family=Cinzel|Source+Sans+Pro|Source+Serif+Pro|Source+Code+Pro' rel='stylesheet'>
+  <link href='style.css' rel='stylesheet'>
 </head>
 <body>
-  <h1>{{title}}</h1>
-  <div class='intro'>{{intro}}</div>
+  <h1>Project Euler Solutions</h1>
+  <div class='intro'>{{{intro}}}</div>
   {{#solutions}}
-    <div class='solution' id='{{n}}'>
+    <div class='solution' id='{{problemNumber}}'>
       <h2>
-        <a class='problem-title' href='#{{n}}'>
+        <a class='problem-title' href='#{{problemNumber}}'>
           <span class='hash'># </span>
+          {{problemTitle}}
         </a>
         <a class='problem-statement'
-          href='https://projecteuler.net/problem={{n}}'>{{n}}</a>
+            href='https://projecteuler.net/problem={{problemNumber}}'>
+          {{problemNumber}}
+        </a>
       </h2>
-      {{body}}
+      {{{solutionBody}}}
     </div>
   {{/solutions}}
 </body>
