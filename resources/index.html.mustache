@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>{{title}}</title>
+  <link href='{{fonts}}' rel='stylesheet'>
+  <link href='{{style}}' rel='stylesheet'>
+</head>
+<body>
+  <h1>{{title}}</h1>
+  <div class='intro'>{{intro}}</div>
+  {{#solutions}}
+    <div class='solution' id='{{n}}'>
+      <h2>
+        <a class='problem-title' href='#{{n}}'>
+          <span class='hash'># </span>
+        </a>
+        <a class='problem-statement'
+          href='https://projecteuler.net/problem={{n}}'>{{n}}</a>
+      </h2>
+      {{body}}
+    </div>
+  {{/solutions}}
+</body>
+</html>
