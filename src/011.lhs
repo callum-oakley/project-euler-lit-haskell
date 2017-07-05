@@ -5,32 +5,21 @@ We're going to want to store our grid as a two dimensional
 >
 > type Grid = Array (Int, Int) Integer
 
-Given some `Grid` we can get all of the products of four horizonal elements as
+Given some `Grid` we can get all of the products of four adjacent elements as
 follows (hard coding indices for simplicity).
 
-> horizontalProducts :: Grid -> [Integer]
-> horizontalProducts grid =
->   [ product [ grid ! (row, column + i) | i <- [0 .. 3] ]
+> adjacentProducts :: Grid -> [Integer]
+> adjacentProducts grid = map product $
+>   [ [grid ! (row, column + i) | i <- [0 .. 3]]
 >   | row <- [0 .. 19], column <- [0 .. 16]
->   ]
-
-Similarly for the vertical and both diagonals.
-
-> verticalProducts :: Grid -> [Integer]
-> verticalProducts grid =
->   [ product [ grid ! (row + i, column) | i <- [0 .. 3] ]
+>   ] ++
+>   [ [grid ! (row + i, column) | i <- [0 .. 3]]
 >   | row <- [0 .. 16], column <- [0 .. 19]
->   ]
->
-> diagonalProducts :: Grid -> [Integer]
-> diagonalProducts grid =
->   [ product [ grid ! (row + i, column + i) | i <- [0 .. 3] ]
+>   ] ++
+>   [ [grid ! (row + i, column + i) | i <- [0 .. 3]]
 >   | row <- [0 .. 16], column <- [0 .. 16]
->   ]
->
-> diagonalProducts' :: Grid -> [Integer]
-> diagonalProducts' grid =
->   [ product [ grid ! (row + i, column - i) | i <- [0 .. 3] ]
+>   ] ++
+>   [ [grid ! (row + i, column - i) | i <- [0 .. 3]]
 >   | row <- [0 .. 16], column <- [3 .. 19]
 >   ]
 
@@ -41,11 +30,4 @@ and plumb everything together to find the maximum product.
 > mkGrid s = listArray ((0, 0), (19, 19))
 >   [read word | line <- lines s , word <- words line]
 >
-> s011 = do
->   grid <- mkGrid <$> readFile "data/011"
->   return $ maximum $ concatMap ($ grid)
->     [ horizontalProducts
->     , verticalProducts
->     , diagonalProducts
->     , diagonalProducts'
->     ]
+> s011 = maximum . adjacentProducts . mkGrid <$> readFile "data/011"
