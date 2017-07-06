@@ -245,8 +245,7 @@ adjacentProducts grid <span class="fu">=</span> map product <span class="fu">$</
   ]</code></pre></div>
 <p>Finally let’s write a function for building a <code>Grid</code> from the raw input string, and plumb everything together to find the maximum product.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">mkGrid ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Grid</span>
-mkGrid s <span class="fu">=</span> listArray ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">19</span>, <span class="dv">19</span>))
-  [read word <span class="fu">|</span> line <span class="ot">&lt;-</span> lines s , word <span class="ot">&lt;-</span> words line]
+mkGrid <span class="fu">=</span> listArray ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">19</span>, <span class="dv">19</span>)) <span class="fu">.</span> map read <span class="fu">.</span> words
 
 s011 <span class="fu">=</span> maximum <span class="fu">.</span> adjacentProducts <span class="fu">.</span> mkGrid <span class="fu">&lt;$&gt;</span> readFile <span class="st">&quot;data/011&quot;</span></code></pre></div>
 

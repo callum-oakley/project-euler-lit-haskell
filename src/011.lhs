@@ -27,7 +27,6 @@ Finally let's write a function for building a `Grid` from the raw input string,
 and plumb everything together to find the maximum product.
 
 > mkGrid :: String -> Grid
-> mkGrid s = listArray ((0, 0), (19, 19))
->   [read word | line <- lines s , word <- words line]
+> mkGrid = listArray ((0, 0), (19, 19)) . map read . words
 >
 > s011 = maximum . adjacentProducts . mkGrid <$> readFile "data/011"
