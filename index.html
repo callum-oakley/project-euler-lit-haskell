@@ -225,25 +225,21 @@ primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span cla
         </a>
       </h2>
       <p>We’re going to want to store our grid as a two dimensional <a href="https://hackage.haskell.org/package/array-0.5.2.0/docs/Data-Array.html">Array</a>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, listArray, (!))
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, bounds, listArray, (!))
+<span class="kw">import </span><span class="dt">Data.Ix</span> (inRange, range)
 
 <span class="kw">type</span> <span class="dt">Grid</span> <span class="fu">=</span> <span class="dt">Array</span> (<span class="dt">Int</span>, <span class="dt">Int</span>) <span class="dt">Integer</span></code></pre></div>
-<p>Given some <code>Grid</code> we can get all of the products of four adjacent elements as follows (hard coding indices for simplicity).</p>
+<p>Given some grid we can get all of the products of four adjacent elements as follows.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">adjacentProducts ::</span> <span class="dt">Grid</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-adjacentProducts grid <span class="fu">=</span> map product <span class="fu">$</span>
-  [ [grid <span class="fu">!</span> (row, column <span class="fu">+</span> i) <span class="fu">|</span> i <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">3</span>]]
-  <span class="fu">|</span> row <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">19</span>], column <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">16</span>]
-  ] <span class="fu">++</span>
-  [ [grid <span class="fu">!</span> (row <span class="fu">+</span> i, column) <span class="fu">|</span> i <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">3</span>]]
-  <span class="fu">|</span> row <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">16</span>], column <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">19</span>]
-  ] <span class="fu">++</span>
-  [ [grid <span class="fu">!</span> (row <span class="fu">+</span> i, column <span class="fu">+</span> i) <span class="fu">|</span> i <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">3</span>]]
-  <span class="fu">|</span> row <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">16</span>], column <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">16</span>]
-  ] <span class="fu">++</span>
-  [ [grid <span class="fu">!</span> (row <span class="fu">+</span> i, column <span class="fu">-</span> i) <span class="fu">|</span> i <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">3</span>]]
-  <span class="fu">|</span> row <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">16</span>], column <span class="ot">&lt;-</span> [<span class="dv">3</span> <span class="fu">..</span> <span class="dv">19</span>]
+adjacentProducts grid <span class="fu">=</span>
+  [ product <span class="fu">$</span> map (grid <span class="fu">!</span>) is
+  <span class="fu">|</span> (x, y) <span class="ot">&lt;-</span> range <span class="fu">$</span> bounds grid
+  , (dx, dy) <span class="ot">&lt;-</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="fu">-</span><span class="dv">1</span>)]
+  , <span class="kw">let</span> is <span class="fu">=</span> [(x <span class="fu">+</span> k <span class="fu">*</span> dx, y <span class="fu">+</span> k <span class="fu">*</span> dy) <span class="fu">|</span> k <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">3</span>]]
+  , all (inRange (bounds grid)) is
   ]</code></pre></div>
-<p>Finally let’s write a function for building a <code>Grid</code> from the raw input string, and plumb everything together to find the maximum product.</p>
+<p>There’s quite a lot going on here so let’s walk through it. We’re taking each index <code>i</code> in the grid, and then for each possible direction, we’re calculating the four adjacent indices gotten by starting at <code>i</code> and moving in that direction – zero to three times. Finally we’re just checking that each of the indices is within our grid and extracting the actual product of the elements at these positions.</p>
+<p>All that remains is to write a function for building a <code>Grid</code> from the raw input string, and plumb everything together to find the maximum product.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">mkGrid ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Grid</span>
 mkGrid <span class="fu">=</span> listArray ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">19</span>, <span class="dv">19</span>)) <span class="fu">.</span> map read <span class="fu">.</span> words
 
