@@ -270,7 +270,7 @@ divisors n <span class="fu">=</span> Set.fromList <span class="fu">$</span> smal
 <p>And a list of triangular numbers.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">triangles ::</span> [<span class="dt">Integer</span>]
 triangles <span class="fu">=</span> [div (n <span class="fu">*</span> (n <span class="fu">+</span> <span class="dv">1</span>)) <span class="dv">2</span> <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span>]]</code></pre></div>
-<p>There’s surely some way to apply a more “dynamic programming” approach to this and cut down on redundant calculations with a recursive <code>divisors</code> definition – but this naive approach gets to the right answer in about 10s on my machine so we’ll leave it as is.</p>
+<p>There’s surely some way to apply a more “dynamic programming” approach to this and cut down on redundant calculations – but this naive approach gets to the right answer on my machine in about 10s so we’ll leave it as is.</p>
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s012 <span class="fu">=</span> head <span class="fu">$</span> filter ((<span class="fu">&gt;</span> <span class="dv">500</span>) <span class="fu">.</span> Set.size <span class="fu">.</span> divisors) <span class="fu">$</span> triangles</code></pre></div>
 
     </div>

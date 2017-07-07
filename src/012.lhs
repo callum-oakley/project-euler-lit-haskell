@@ -16,8 +16,7 @@ And a list of triangular numbers.
 > triangles = [div (n * (n + 1)) 2 | n <- [1 ..]]
 
 There's surely some way to apply a more "dynamic programming" approach to this
-and cut down on redundant calculations with a recursive `divisors` definition –
-but this naive approach gets to the right answer in about 10s on my machine so
-we'll leave it as is.
+and cut down on redundant calculations – but this naive approach gets to the
+right answer on my machine in about 10s so we'll leave it as is.
 
 > s012 = head $ filter ((> 500) . Set.size . divisors) $ triangles
