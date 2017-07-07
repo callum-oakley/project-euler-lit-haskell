@@ -246,6 +246,34 @@ mkGrid <span class="fu">=</span> listArray ((<span class="dv">0</span>, <span cl
 s011 <span class="fu">=</span> maximum <span class="fu">.</span> adjacentProducts <span class="fu">.</span> mkGrid <span class="fu">&lt;$&gt;</span> readFile <span class="st">&quot;data/011&quot;</span></code></pre></div>
 
     </div>
+    <div class='solution' id='012'>
+      <h2>
+        <a class='problem-title' href='#012'>
+          <span class='hash'># </span>
+          Highly divisible triangular number
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=012'>
+          012
+        </a>
+      </h2>
+      <p>First we’re going to need a function for calculating divisors.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Set</span> (<span class="dt">Set</span>)
+<span class="kw">import qualified</span> <span class="dt">Data.Set</span> <span class="kw">as</span> <span class="dt">Set</span>
+
+<span class="ot">divisors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Set</span> <span class="dt">Integer</span>
+divisors n <span class="fu">=</span> Set.fromList <span class="fu">$</span> smallDivisors <span class="fu">++</span> bigDivisors
+  <span class="kw">where</span>
+    intSqrt <span class="fu">=</span> floor <span class="fu">.</span> sqrt <span class="fu">.</span> fromIntegral
+    smallDivisors <span class="fu">=</span> filter ((<span class="fu">==</span> <span class="dv">0</span>) <span class="fu">.</span> mod n) [<span class="dv">1</span> <span class="fu">..</span> intSqrt n]
+    bigDivisors <span class="fu">=</span> map (div n) smallDivisors</code></pre></div>
+<p>And a list of triangular numbers.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">triangles ::</span> [<span class="dt">Integer</span>]
+triangles <span class="fu">=</span> [div (n <span class="fu">*</span> (n <span class="fu">+</span> <span class="dv">1</span>)) <span class="dv">2</span> <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span>]]</code></pre></div>
+<p>There’s surely some way to apply a more “dynamic programming” approach to this and cut down on redundant calculations with a recursive <code>divisors</code> definition – but this naive approach gets to the right answer in about 10s on my machine so we’ll leave it as is.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s012 <span class="fu">=</span> head <span class="fu">$</span> filter ((<span class="fu">&gt;</span> <span class="dv">500</span>) <span class="fu">.</span> Set.size <span class="fu">.</span> divisors) <span class="fu">$</span> triangles</code></pre></div>
+
+    </div>
 </body>
 </html>
 
