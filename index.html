@@ -291,6 +291,38 @@ s013 <span class="fu">=</span>
   readFile <span class="st">&quot;data/013&quot;</span></code></pre></div>
 
     </div>
+    <div class='solution' id='014'>
+      <h2>
+        <a class='problem-title' href='#014'>
+          <span class='hash'># </span>
+          Longest Collatz sequence
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=014'>
+          014
+        </a>
+      </h2>
+      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, assocs, listArray, (!))
+<span class="kw">import </span><span class="dt">Data.List</span> (maximumBy)
+<span class="kw">import </span><span class="dt">Data.Ord</span> (comparing)</code></pre></div>
+<p>It’s tempting to write a function to calculate the Collatz length of a given integer, and then to map that over every integer in the range to find our maximum. However, if, for example, we already know the Collatz length of 20, and we want to know the Collatz length of 40, it is unnecessary to recalculate the Collatz length of 20. We can do a lot better by calculating every Collatz length we care about together, and referencing values we already know.</p>
+<p>To that end, the following function populates an array of the Collatz lengths of all the numbers from 1 to its input.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">collatzLengths ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Array</span> <span class="dt">Integer</span> <span class="dt">Integer</span>
+collatzLengths n <span class="fu">=</span> memo
+  <span class="kw">where</span>
+    memo <span class="fu">=</span> listArray (<span class="dv">1</span>, n) [collatzLength m <span class="fu">|</span> m <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> n]]
+    collatzLength <span class="dv">1</span> <span class="fu">=</span> <span class="dv">1</span>
+    collatzLength m
+      <span class="fu">|</span> k <span class="fu">&lt;=</span> n <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> memo <span class="fu">!</span> k
+      <span class="fu">|</span> k <span class="fu">&gt;</span> n <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> collatzLength k
+      <span class="kw">where</span>
+        k <span class="fu">=</span> <span class="kw">if</span> even m <span class="kw">then</span> div m <span class="dv">2</span> <span class="kw">else</span> <span class="dv">3</span> <span class="fu">*</span> m <span class="fu">+</span> <span class="dv">1</span></code></pre></div>
+<p><code>memo</code> is lazily populated, and defers to <code>collatzLength</code>, but once we have calculated <code>collatzLength m</code> once, we can just look it up in <code>memo</code> on subsequent calls.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s014 <span class="fu">=</span>
+  fst <span class="fu">$</span> maximumBy (comparing snd) <span class="fu">$</span> assocs <span class="fu">$</span>
+  collatzLengths <span class="fu">$</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
+
+    </div>
 </body>
 </html>
 
