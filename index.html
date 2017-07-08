@@ -417,6 +417,29 @@ say n
 s017 <span class="fu">=</span> sum <span class="fu">$</span> map (length <span class="fu">.</span> say) <span class="fu">$</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">1000</span>]</code></pre></div>
 
     </div>
+    <div class='solution' id='018'>
+      <h2>
+        <a class='problem-title' href='#018'>
+          <span class='hash'># </span>
+          Maximum path sum I
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=018'>
+          018
+        </a>
+      </h2>
+      <p>We’ll represent the triangle as a nested list. Actually calculating the maximum total from top to bottom can be done in one pass, folding from bottom to top and accumulating the maximum totals.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">maxTotal ::</span> [[<span class="dt">Integer</span>]] <span class="ot">-&gt;</span> <span class="dt">Integer</span>
+maxTotal <span class="fu">=</span>
+  head <span class="fu">.</span> foldr1 (\row acc <span class="ot">-&gt;</span> zipWith3 newTotal row acc (tail acc))
+  <span class="kw">where</span>
+    newTotal new left right <span class="fu">=</span> new <span class="fu">+</span> max left right</code></pre></div>
+<p>Building the triangle and applying <code>maxTotal</code>.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s018 <span class="fu">=</span>
+  maxTotal <span class="fu">.</span> map (map read) <span class="fu">.</span> map words <span class="fu">.</span> lines <span class="fu">&lt;$&gt;</span>
+  readFile <span class="st">&quot;data/018&quot;</span></code></pre></div>
+
+    </div>
 </body>
 </html>
 
