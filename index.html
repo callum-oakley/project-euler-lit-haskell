@@ -323,6 +323,26 @@ collatzLengths n <span class="fu">=</span> memo
   collatzLengths <span class="fu">$</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
 
     </div>
+    <div class='solution' id='015'>
+      <h2>
+        <a class='problem-title' href='#015'>
+          <span class='hash'># </span>
+          Lattice paths
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=015'>
+          015
+        </a>
+      </h2>
+      <p>We can map routes bijectively to strings of length 40 consisting of exactly 20 Rs (“Right”) and exactly 20 Ds (“Down”). Elementary combinatorics tells us there are “40 <a href="https://en.wikipedia.org/wiki/Binomial_coefficient">choose</a> 20” of these.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">choose ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
+choose n k <span class="fu">=</span> div (factorial n) (factorial k <span class="fu">*</span> factorial (n <span class="fu">-</span> k))
+  <span class="kw">where</span>
+    factorial m <span class="fu">=</span> product [<span class="dv">1</span> <span class="fu">..</span> m]
+
+s015 <span class="fu">=</span> choose <span class="dv">40</span> <span class="dv">20</span></code></pre></div>
+
+    </div>
 </body>
 </html>
 
