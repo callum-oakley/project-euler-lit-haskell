@@ -273,6 +273,24 @@ triangles <span class="fu">=</span> scanl1 (<span class="fu">+</span>) [<span cl
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s012 <span class="fu">=</span> head <span class="fu">$</span> filter ((<span class="fu">&gt;</span> <span class="dv">500</span>) <span class="fu">.</span> length <span class="fu">.</span> divisors) <span class="fu">$</span> triangles</code></pre></div>
 
     </div>
+    <div class='solution' id='013'>
+      <h2>
+        <a class='problem-title' href='#013'>
+          <span class='hash'># </span>
+          Large sum
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=013'>
+          013
+        </a>
+      </h2>
+      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="dt">This</span> one is trivial<span class="fu">.</span>
+
+s013 <span class="fu">=</span>
+  take <span class="dv">10</span> <span class="fu">.</span> show <span class="fu">.</span> sum <span class="fu">.</span> map read <span class="fu">.</span> lines <span class="fu">&lt;$&gt;</span>
+  readFile <span class="st">&quot;data/013&quot;</span></code></pre></div>
+
+    </div>
 </body>
 </html>
 
