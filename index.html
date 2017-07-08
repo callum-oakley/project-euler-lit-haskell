@@ -356,6 +356,23 @@ s015 <span class="fu">=</span> lattice ((<span class="dv">0</span>, <span class=
 <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s015&#39; <span class="fu">=</span> iterate (scanl1 (<span class="fu">+</span>)) (repeat <span class="dv">1</span>) <span class="fu">!!</span> <span class="dv">20</span> <span class="fu">!!</span> <span class="dv">20</span></code></pre></div>
 
     </div>
+    <div class='solution' id='016'>
+      <h2>
+        <a class='problem-title' href='#016'>
+          <span class='hash'># </span>
+          Power digit sum
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=016'>
+          016
+        </a>
+      </h2>
+      <p>This one is pretty trivial.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
+
+s016 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <span class="fu">$</span> show <span class="fu">$</span> <span class="dv">2</span> <span class="fu">^</span> <span class="dv">1000</span></code></pre></div>
+
+    </div>
 </body>
 </html>
 
