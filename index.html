@@ -334,13 +334,26 @@ collatzLengths n <span class="fu">=</span> memo
           015
         </a>
       </h2>
-      <p>We can map routes bijectively to strings of length 40 consisting of exactly 20 Rs (“Right”) and exactly 20 Ds (“Down”). Elementary combinatorics tells us there are “40 <a href="https://en.wikipedia.org/wiki/Binomial_coefficient">choose</a> 20” of these.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">choose ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
-choose n k <span class="fu">=</span> div (factorial n) (factorial k <span class="fu">*</span> factorial (n <span class="fu">-</span> k))
-  <span class="kw">where</span>
-    factorial m <span class="fu">=</span> product [<span class="dv">1</span> <span class="fu">..</span> m]
+      <p>This is a one liner with some combinatorics, but let’s solve it in a slightly more interesting way. Imagine labelling each point in our lattice with the number of routes that end at that point. (Indexing from <code>(0, 0)</code> in the top left corner.)</p>
+<ul>
+<li><p>Every point at the top or left edge of the lattice has precisely one route to it (consisting of just left or just down repeatedly).</p></li>
+<li><p>For every other point, <code>(x, y)</code>, each route that ends at <code>(x, y)</code> must pass through either the point immediately above or immediately to the right, so the number of routes to <code>(x, y)</code> is the sum of the number of routes to <code>(x -   1, y)</code> and the number of routes to <code>(x, y - 1)</code>. The implementation then is a straightforward recursion, which we memoize for efficiency.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, listArray, range, (!))
 
-s015 <span class="fu">=</span> choose <span class="dv">40</span> <span class="dv">20</span></code></pre></div>
+lattice
+<span class="ot">  ::</span> ((<span class="dt">Integer</span>, <span class="dt">Integer</span>), (<span class="dt">Integer</span>, <span class="dt">Integer</span>))
+  <span class="ot">-&gt;</span> <span class="dt">Array</span> (<span class="dt">Integer</span>, <span class="dt">Integer</span>) <span class="dt">Integer</span>
+lattice ix <span class="fu">=</span> memo
+  <span class="kw">where</span>
+    memo <span class="fu">=</span> listArray ix [lattice&#39; i <span class="fu">|</span> i <span class="ot">&lt;-</span> range ix]
+    lattice&#39; (x, y)
+      <span class="fu">|</span> x <span class="fu">==</span> <span class="dv">0</span> <span class="fu">||</span> y <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> <span class="dv">1</span>
+      <span class="fu">|</span> otherwise <span class="fu">=</span> memo <span class="fu">!</span> (x <span class="fu">-</span> <span class="dv">1</span>, y) <span class="fu">+</span> memo <span class="fu">!</span> (x, y <span class="fu">-</span> <span class="dv">1</span>)
+
+s015 <span class="fu">=</span> lattice ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">20</span>, <span class="dv">20</span>)) <span class="fu">!</span> (<span class="dv">20</span>, <span class="dv">20</span>)</code></pre></div>
+<p>There’s an outrageously neat solution on <a href="https://wiki.haskell.org/Euler_problems/11_to_20">the Haskell wiki</a> that works in a very similar way, but makes a couple more logical jumps so is slightly harder to unpack. I’ll leave it here becuse it’s awesome.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s015&#39; <span class="fu">=</span> iterate (scanl1 (<span class="fu">+</span>)) (repeat <span class="dv">1</span>) <span class="fu">!!</span> <span class="dv">20</span> <span class="fu">!!</span> <span class="dv">20</span></code></pre></div>
 
     </div>
 </body>
