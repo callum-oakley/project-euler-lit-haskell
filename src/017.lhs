@@ -15,23 +15,18 @@ This is pretty dull, but it works.
 >   | n == 11 = "eleven"
 >   | n == 12 = "twelve"
 >   | n == 13 = "thirteen"
->   | n == 14 = "fourteen"
 >   | n == 15 = "fifteen"
->   | n == 16 = "sixteen"
->   | n == 17 = "seventeen"
 >   | n == 18 = "eighteen"
->   | n == 19 = "nineteen"
+>   | n < 20 = say (mod n 10) ++ "teen"
 >   | n == 20 = "twenty"
 >   | n == 30 = "thirty"
 >   | n == 40 = "forty"
 >   | n == 50 = "fifty"
->   | n == 60 = "sixty"
->   | n == 70 = "seventy"
 >   | n == 80 = "eighty"
->   | n == 90 = "ninety"
+>   | n < 100 && mod n 10 == 0 = say (div n 10) ++ "ty"
 >   | n < 100 = say (div n 10 * 10) ++ say (mod n 10)
+>   | n < 1000 && mod n 100 == 0 = say (div n 100) ++ "hundred"
+>   | n < 1000 = say (div n 100 * 100) ++ "and" ++ say (mod n 100)
 >   | n == 1000 = "onethousand"
->   | mod n 100 == 0 = say (div n 100) ++ "hundred"
->   | otherwise = say (div n 100 * 100) ++ "and" ++ say (mod n 100)
 >
 > s017 = sum $ map (length . say) $ [1 .. 1000]

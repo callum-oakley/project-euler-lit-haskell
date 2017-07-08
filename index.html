@@ -400,24 +400,19 @@ say n
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">11</span> <span class="fu">=</span> <span class="st">&quot;eleven&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">12</span> <span class="fu">=</span> <span class="st">&quot;twelve&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">13</span> <span class="fu">=</span> <span class="st">&quot;thirteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">14</span> <span class="fu">=</span> <span class="st">&quot;fourteen&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">15</span> <span class="fu">=</span> <span class="st">&quot;fifteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">16</span> <span class="fu">=</span> <span class="st">&quot;sixteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">17</span> <span class="fu">=</span> <span class="st">&quot;seventeen&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">18</span> <span class="fu">=</span> <span class="st">&quot;eighteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">19</span> <span class="fu">=</span> <span class="st">&quot;nineteen&quot;</span>
+  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">20</span> <span class="fu">=</span> say (mod n <span class="dv">10</span>) <span class="fu">++</span> <span class="st">&quot;teen&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">20</span> <span class="fu">=</span> <span class="st">&quot;twenty&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">30</span> <span class="fu">=</span> <span class="st">&quot;thirty&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">40</span> <span class="fu">=</span> <span class="st">&quot;forty&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">50</span> <span class="fu">=</span> <span class="st">&quot;fifty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">60</span> <span class="fu">=</span> <span class="st">&quot;sixty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">70</span> <span class="fu">=</span> <span class="st">&quot;seventy&quot;</span>
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">80</span> <span class="fu">=</span> <span class="st">&quot;eighty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">90</span> <span class="fu">=</span> <span class="st">&quot;ninety&quot;</span>
+  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">100</span> <span class="fu">&amp;&amp;</span> mod n <span class="dv">10</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> say (div n <span class="dv">10</span>) <span class="fu">++</span> <span class="st">&quot;ty&quot;</span>
   <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">100</span> <span class="fu">=</span> say (div n <span class="dv">10</span> <span class="fu">*</span> <span class="dv">10</span>) <span class="fu">++</span> say (mod n <span class="dv">10</span>)
+  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">1000</span> <span class="fu">&amp;&amp;</span> mod n <span class="dv">100</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> say (div n <span class="dv">100</span>) <span class="fu">++</span> <span class="st">&quot;hundred&quot;</span>
+  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">1000</span> <span class="fu">=</span> say (div n <span class="dv">100</span> <span class="fu">*</span> <span class="dv">100</span>) <span class="fu">++</span> <span class="st">&quot;and&quot;</span> <span class="fu">++</span> say (mod n <span class="dv">100</span>)
   <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">1000</span> <span class="fu">=</span> <span class="st">&quot;onethousand&quot;</span>
-  <span class="fu">|</span> mod n <span class="dv">100</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> say (div n <span class="dv">100</span>) <span class="fu">++</span> <span class="st">&quot;hundred&quot;</span>
-  <span class="fu">|</span> otherwise <span class="fu">=</span> say (div n <span class="dv">100</span> <span class="fu">*</span> <span class="dv">100</span>) <span class="fu">++</span> <span class="st">&quot;and&quot;</span> <span class="fu">++</span> say (mod n <span class="dv">100</span>)
 
 s017 <span class="fu">=</span> sum <span class="fu">$</span> map (length <span class="fu">.</span> say) <span class="fu">$</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">1000</span>]</code></pre></div>
 
