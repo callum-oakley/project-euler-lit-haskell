@@ -440,6 +440,30 @@ maxTotal <span class="fu">=</span>
   readFile <span class="st">&quot;data/018&quot;</span></code></pre></div>
 
     </div>
+    <div class='solution' id='019'>
+      <h2>
+        <a class='problem-title' href='#019'>
+          <span class='hash'># </span>
+          Counting Sundays
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=019'>
+          019
+        </a>
+      </h2>
+      <p>We can make our life a lot easier by using <code>Data.Time</code> rather than re-inventing the wheel.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Time.Calendar</span> (fromGregorian, addGregorianMonthsClip)
+<span class="kw">import </span><span class="dt">Data.Time.Format</span> (defaultTimeLocale, formatTime)</code></pre></div>
+<p>Then we can just count Sundays over a range of days.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s019 <span class="fu">=</span> length <span class="fu">$</span> filter (\d <span class="ot">-&gt;</span> day d <span class="fu">==</span> <span class="st">&quot;Sun&quot;</span>) <span class="fu">$</span> days
+  <span class="kw">where</span>
+    nextMonth <span class="fu">=</span> addGregorianMonthsClip <span class="dv">1</span>
+    from <span class="fu">=</span> fromGregorian <span class="dv">1901</span> <span class="dv">1</span> <span class="dv">1</span>
+    to <span class="fu">=</span> fromGregorian <span class="dv">2000</span> <span class="dv">12</span> <span class="dv">31</span>
+    days <span class="fu">=</span> takeWhile (<span class="fu">&lt;</span> to) <span class="fu">$</span> iterate nextMonth <span class="fu">$</span> from
+    day d <span class="fu">=</span> formatTime defaultTimeLocale <span class="st">&quot;%a&quot;</span> d</code></pre></div>
+
+    </div>
 </body>
 </html>
 
