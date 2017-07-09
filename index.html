@@ -476,6 +476,41 @@ maxTotal <span class="fu">=</span>
 s020 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <span class="fu">$</span> show <span class="fu">$</span> product [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>]</code></pre></div>
 
     </div>
+    <div class='solution' id='021'>
+      <h2>
+        <a class='problem-title' href='#021'>
+          <span class='hash'># </span>
+          Amicable numbers
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=021'>
+          021
+        </a>
+      </h2>
+      <p>We’ll modifying our <code>divisors</code> function from <a href="#012">solution 012</a> to find only the proper divisors of a given integer.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">intSqrt ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
+intSqrt <span class="fu">=</span> floor <span class="fu">.</span> sqrt <span class="fu">.</span> fromIntegral
+
+<span class="ot">properDivisors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
+properDivisors n <span class="fu">=</span>
+  [ d&#39;
+  <span class="fu">|</span> d <span class="ot">&lt;-</span> filter ((<span class="fu">==</span> <span class="dv">0</span>) <span class="fu">.</span> mod n) [<span class="dv">2</span> <span class="fu">..</span> intSqrt n]
+  , d&#39; <span class="ot">&lt;-</span> <span class="kw">if</span> d <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> n <span class="kw">then</span> [d] <span class="kw">else</span> [d, div n d]
+  ]</code></pre></div>
+<p>Then <code>d</code> as defined in the problem is just</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">d ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
+d <span class="fu">=</span> sum <span class="fu">.</span> properDivisors</code></pre></div>
+<p><code>n</code> is amicable if there is some <code>m</code> such that</p>
+<pre><code>m /= n &amp;&amp; d n == m &amp;&amp; d m == n</code></pre>
+<p>or, substituting <code>m</code> for <code>d n</code></p>
+<pre><code>d n /= n &amp;&amp; d (d n) == n</code></pre>
+<p>so we can define</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">isAmicable ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+isAmicable n <span class="fu">=</span> d n <span class="fu">/=</span> n <span class="fu">&amp;&amp;</span> d (d n) <span class="fu">==</span> n</code></pre></div>
+<p>and the solution is just</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s021 <span class="fu">=</span> sum <span class="fu">$</span> filter isAmicable [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">10000</span>]</code></pre></div>
+
+    </div>
 </body>
 </html>
 
