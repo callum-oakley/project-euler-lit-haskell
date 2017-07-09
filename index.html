@@ -459,6 +459,23 @@ maxTotal <span class="fu">=</span>
   [fromGregorian y m <span class="dv">1</span> <span class="fu">|</span> y <span class="ot">&lt;-</span> [<span class="dv">1901</span> <span class="fu">..</span> <span class="dv">2000</span>], m <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">12</span>]]</code></pre></div>
 
     </div>
+    <div class='solution' id='020'>
+      <h2>
+        <a class='problem-title' href='#020'>
+          <span class='hash'># </span>
+          Factorial digit sum
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=020'>
+          020
+        </a>
+      </h2>
+      <p>An easy one liner.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
+
+s020 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <span class="fu">$</span> show <span class="fu">$</span> product [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>]</code></pre></div>
+
+    </div>
 </body>
 </html>
 
