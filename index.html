@@ -492,7 +492,7 @@ s020 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <spa
 intSqrt <span class="fu">=</span> floor <span class="fu">.</span> sqrt <span class="fu">.</span> fromIntegral
 
 <span class="ot">properDivisors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-properDivisors n <span class="fu">=</span>
+properDivisors n <span class="fu">=</span> <span class="dv">1</span> <span class="fu">:</span>
   [ d&#39;
   <span class="fu">|</span> d <span class="ot">&lt;-</span> filter ((<span class="fu">==</span> <span class="dv">0</span>) <span class="fu">.</span> mod n) [<span class="dv">2</span> <span class="fu">..</span> intSqrt n]
   , d&#39; <span class="ot">&lt;-</span> <span class="kw">if</span> d <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> n <span class="kw">then</span> [d] <span class="kw">else</span> [d, div n d]

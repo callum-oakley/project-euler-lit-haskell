@@ -5,7 +5,7 @@ the proper divisors of a given integer.
 > intSqrt = floor . sqrt . fromIntegral
 >
 > properDivisors :: Integer -> [Integer]
-> properDivisors n =
+> properDivisors n = 1 :
 >   [ d'
 >   | d <- filter ((== 0) . mod n) [2 .. intSqrt n]
 >   , d' <- if d ^ 2 == n then [d] else [d, div n d]
