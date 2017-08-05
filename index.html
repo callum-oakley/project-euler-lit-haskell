@@ -8,7 +8,7 @@
 </head>
 <body>
   <h1>Project Euler Solutions</h1>
-  <div class='intro'><p>Solutions to the problems on <a href="https://projecteuler.net/">projecteuler.net</a> written in <a href="https://wiki.haskell.org/Literate_programming">Literate Haskell</a>. Source can be found <a href="https://github.com/hot-leaf-juice/project-euler/tree/master/src">here</a>. Click the link to the right of each solution to see the statement of the corresponding problem.</p>
+  <div class='intro'><p>Solutions to the problems on <a href="https://projecteuler.net/">projecteuler.net</a> written in abundantly commented Haskell. Source can be found <a href="https://github.com/hot-leaf-juice/project-euler/tree/master/src">here</a>. Follow the link to the right of each solution to see the statement of the corresponding problem.</p>
 </div>
     <div class='solution' id='001'>
       <h2>
@@ -22,7 +22,8 @@
         </a>
       </h2>
       <p>This can be solved in constant time with some closed sum formulae, but the obvious list comprehension is super neat and plenty fast.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s001 <span class="fu">=</span> sum [n <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">999</span>], mod n <span class="dv">3</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">||</span> mod n <span class="dv">5</span> <span class="fu">==</span> <span class="dv">0</span>]</code></pre></div>
+<pre><code>s001 = sum [n | n &lt;- [1 .. 999], mod n 3 == 0 || mod n 5 == 0]
+</code></pre>
 
     </div>
     <div class='solution' id='002'>
@@ -37,10 +38,12 @@
         </a>
       </h2>
       <p>Pick your favourite <code>fibs</code> definition from <a href="https://wiki.haskell.org/The_Fibonacci_sequence">the Haskell wiki</a>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">fibs ::</span> [<span class="dt">Integer</span>]
-fibs <span class="fu">=</span> <span class="dv">0</span> <span class="fu">:</span> scanl (<span class="fu">+</span>) <span class="dv">1</span> fibs</code></pre></div>
+<pre><code>fibs :: [Integer]
+fibs = 0 : scanl (+) 1 fibs
+</code></pre>
 <p>The self reference works here because <code>scanl</code> is only ever consuming values of <code>fibs</code> that we have already calculated. Once we have all the fibbonacci numbers the solution is trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s002 <span class="fu">=</span> sum <span class="fu">$</span> filter even <span class="fu">$</span> takeWhile (<span class="fu">&lt;=</span> <span class="dv">4</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span>) fibs</code></pre></div>
+<pre><code>s002 = sum $ filter even $ takeWhile (&lt;= 4 * 10 ^ 6) fibs
+</code></pre>
 
     </div>
     <div class='solution' id='003'>
@@ -55,13 +58,15 @@ fibs <span class="fu">=</span> <span class="dv">0</span> <span class="fu">:</spa
         </a>
       </h2>
       <p>We calculate the prime factors of <code>n</code> recursively, finding the smallest divisor at each stage. (The smallest divisor is necessarily prime, otherwise it is <code>pq</code> for some prime <code>p</code> and some <code>q &gt; 1</code>, and <code>p</code> is a smaller divisor. Contradiction.)</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primeFactors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-primeFactors <span class="dv">1</span> <span class="fu">=</span> []
-primeFactors n <span class="fu">=</span> p <span class="fu">:</span> primeFactors (div n p)
-  <span class="kw">where</span>
-    p <span class="fu">=</span> head <span class="fu">$</span> filter (\d <span class="ot">-&gt;</span> mod n d <span class="fu">==</span> <span class="dv">0</span>) [<span class="dv">2</span> <span class="fu">..</span>]</code></pre></div>
+<pre><code>primeFactors :: Integer -&gt; [Integer]
+primeFactors 1 = []
+primeFactors n = p : primeFactors (div n p)
+  where
+    p = head $ filter (\d -&gt; mod n d == 0) [2 ..]
+</code></pre>
 <p>Given this, the final solution is trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s003 <span class="fu">=</span> maximum <span class="fu">$</span> primeFactors <span class="dv">600851475143</span></code></pre></div>
+<pre><code>s003 = maximum $ primeFactors 600851475143
+</code></pre>
 
     </div>
     <div class='solution' id='004'>
@@ -76,14 +81,16 @@ primeFactors n <span class="fu">=</span> p <span class="fu">:</span> primeFactor
         </a>
       </h2>
       <p>The <code>reverse</code> builtin makes writing an <code>isPalindromic</code> function trivial for any type implementing <code>Show</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">isPalindromic ::</span> <span class="dt">Show</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span>
-isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (reverse <span class="fu">.</span> show) x</code></pre></div>
+<pre><code>isPalindromic :: Show a =&gt; a -&gt; Bool
+isPalindromic x = show x == (reverse . show) x
+</code></pre>
 <p>The only minor optimisation worth note here is assuming without loss of generality that <code>x &lt;= y</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s004 <span class="fu">=</span> maximum <span class="fu">$</span> filter isPalindromic
-  [ x <span class="fu">*</span> y
-  <span class="fu">|</span> x <span class="ot">&lt;-</span> [<span class="dv">100</span> <span class="fu">..</span> <span class="dv">999</span>]
-  , y <span class="ot">&lt;-</span> [x <span class="fu">..</span> <span class="dv">999</span>]
-  ]</code></pre></div>
+<pre><code>s004 = maximum $ filter isPalindromic
+  [ x * y
+  | x &lt;- [100 .. 999]
+  , y &lt;- [x .. 999]
+  ]
+</code></pre>
 
     </div>
     <div class='solution' id='005'>
@@ -98,9 +105,11 @@ isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (rev
         </a>
       </h2>
       <p>Rewording the question, we want the lowest common multiple of all the numbers from 1 to 20, and since (mathematically speaking)</p>
-<pre><code>lcm x y z = lcm x (lcm y z)</code></pre>
+<pre><code>lcm x y z = lcm x (lcm y z)
+</code></pre>
 <p>we can just fold with <code>lcm</code>!</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s005 <span class="fu">=</span> foldl lcm <span class="dv">1</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">20</span>]</code></pre></div>
+<pre><code>s005 = foldl lcm 1 [1 .. 20]
+</code></pre>
 
     </div>
     <div class='solution' id='006'>
@@ -115,7 +124,8 @@ isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (rev
         </a>
       </h2>
       <p>This is just a direct translation of the statement of the question to valid Haskell.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s006 <span class="fu">=</span> sum [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>] <span class="fu">^</span> <span class="dv">2</span> <span class="fu">-</span> sum [n <span class="fu">^</span> <span class="dv">2</span> <span class="fu">|</span> n <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>]]</code></pre></div>
+<pre><code>s006 = sum [1 .. 100] ^ 2 - sum [n ^ 2 | n &lt;- [1 .. 100]]
+</code></pre>
 
     </div>
     <div class='solution' id='007'>
@@ -130,16 +140,19 @@ isPalindromic x <span class="fu">=</span> show x <span class="fu">==</span> (rev
         </a>
       </h2>
       <p>We’ll make use of the <a href="https://hackage.haskell.org/package/data-ordlist-0.4.7.0/docs/Data-List-Ordered.html"><code>Data.List.Ordered</code></a> package; <code>minus</code> is an optimised version of <code>(\\)</code> from <code>Data.List</code> which assumes its operands are ordered.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
+<pre><code>import Data.List.Ordered (minus)
+</code></pre>
 <p>The definition of <code>primesTo</code> comes from <a href="https://wiki.haskell.org/Prime_numbers">the Haskell wiki</a>. This one strikes a nice balance between speed and readability (there are many more optimisations that could be made, at the expense of the latter).</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span class="fu">..</span> n]
-  <span class="kw">where</span>
-    eratos [] <span class="fu">=</span> []
-    eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
+<pre><code>primesTo :: Integer -&gt; [Integer]
+primesTo n = eratos [2 .. n]
+  where
+    eratos [] = []
+    eratos (p:xs) = p : eratos (minus xs [p ^ 2, p ^ 2 + p .. n])
+</code></pre>
 <p>Note in particular that for each prime found we start eliminating multiples at <code>p ^ 2</code>, since any smaller multiples must have another prime factor smaller than <code>p</code>, and so will have already been removed.</p>
 <p>A sufficient number of primes to generate (<code>2 ^ 17</code>) was found manually by trial and error. A more robust solution would use some calculated bound.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s007 <span class="fu">=</span> primesTo (<span class="dv">2</span> <span class="fu">^</span> <span class="dv">17</span>) <span class="fu">!!</span> <span class="dv">10000</span></code></pre></div>
+<pre><code>s007 = primesTo (2 ^ 17) !! 10000
+</code></pre>
 
     </div>
     <div class='solution' id='008'>
@@ -153,18 +166,22 @@ primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span cla
           008
         </a>
       </h2>
-      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
-<span class="kw">import </span><span class="dt">Data.List</span> (tails)</code></pre></div>
+      <pre><code>import Data.Char (digitToInt)
+import Data.List (tails)
+</code></pre>
 <p>First we define a function that returns “slices” of length <code>n</code> from a list. e.g.</p>
-<pre><code>slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]</code></pre>
+<pre><code>slicesOf 3 [1 .. 5] = [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+</code></pre>
 <p>By taking the first <code>n</code> <code>tails</code> and then zipping them together.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">slicesOf ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [[a]]
-slicesOf n <span class="fu">=</span> foldr (zipWith (<span class="fu">:</span>)) (repeat []) <span class="fu">.</span> take n <span class="fu">.</span> tails</code></pre></div>
+<pre><code>slicesOf :: Int -&gt; [a] -&gt; [[a]]
+slicesOf n = foldr (zipWith (:)) (repeat []) . take n . tails
+</code></pre>
 <p>The rest of the solution is plumbing to read the input, and to get the largest product of the slices.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s008 <span class="fu">=</span> <span class="kw">do</span>
-  raw <span class="ot">&lt;-</span> readFile <span class="st">&quot;data/008&quot;</span>
-  <span class="kw">let</span> grid <span class="fu">=</span> map digitToInt <span class="fu">$</span> concat <span class="fu">$</span> lines raw
-  return <span class="fu">$</span> maximum <span class="fu">$</span> map product <span class="fu">$</span> slicesOf <span class="dv">13</span> grid</code></pre></div>
+<pre><code>s008 = do
+  raw &lt;- readFile &quot;data/008&quot;
+  let grid = map digitToInt $ concat $ lines raw
+  return $ maximum $ map product $ slicesOf 13 grid
+</code></pre>
 
     </div>
     <div class='solution' id='009'>
@@ -179,17 +196,19 @@ slicesOf n <span class="fu">=</span> foldr (zipWith (<span class="fu">:</span>))
         </a>
       </h2>
       <p>Assume without loss of generality that <code>a &lt;= b &lt;= c</code>, and then find all such triplets with a list comprehension.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">tripletsWithPerimeter ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [[<span class="dt">Integer</span>]]
-tripletsWithPerimeter n <span class="fu">=</span>
+<pre><code>tripletsWithPerimeter :: Integer -&gt; [[Integer]]
+tripletsWithPerimeter n =
   [ [a, b, c]
-  <span class="fu">|</span> a <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> n]
-  , b <span class="ot">&lt;-</span> [a <span class="fu">..</span> n]
-  , <span class="kw">let</span> c <span class="fu">=</span> n <span class="fu">-</span> a <span class="fu">-</span> b
-  , c <span class="fu">&gt;=</span> b
-  , a <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> b <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> c <span class="fu">^</span> <span class="dv">2</span>
-  ]</code></pre></div>
+  | a &lt;- [1 .. n]
+  , b &lt;- [a .. n]
+  , let c = n - a - b
+  , c &gt;= b
+  , a ^ 2 + b ^ 2 == c ^ 2
+  ]
+</code></pre>
 <p>Trust the question and extract our single match with <code>head</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s009 <span class="fu">=</span> product <span class="fu">$</span> head <span class="fu">$</span> tripletsWithPerimeter <span class="dv">1000</span></code></pre></div>
+<pre><code>s009 = product $ head $ tripletsWithPerimeter 1000
+</code></pre>
 
     </div>
     <div class='solution' id='010'>
@@ -203,14 +222,17 @@ tripletsWithPerimeter n <span class="fu">=</span>
           010
         </a>
       </h2>
-      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List.Ordered</span> (minus)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">primesTo ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span class="fu">..</span> n]
-  <span class="kw">where</span>
-    eratos [] <span class="fu">=</span> []
-    eratos (p<span class="fu">:</span>xs) <span class="fu">=</span> p <span class="fu">:</span> eratos (minus xs [p <span class="fu">^</span> <span class="dv">2</span>, p <span class="fu">^</span> <span class="dv">2</span> <span class="fu">+</span> p <span class="fu">..</span> n])</code></pre></div>
+      <pre><code>import Data.List.Ordered (minus)
+
+primesTo :: Integer -&gt; [Integer]
+primesTo n = eratos [2 .. n]
+  where
+    eratos [] = []
+    eratos (p:xs) = p : eratos (minus xs [p ^ 2, p ^ 2 + p .. n])
+</code></pre>
 <p>Using our same <code>primesTo</code> function from <a href="#007">problem 007</a>, the solution is trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s010 <span class="fu">=</span> sum <span class="fu">$</span> primesTo <span class="fu">$</span> <span class="dv">2</span> <span class="fu">*</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
+<pre><code>s010 = sum $ primesTo $ 2 * 10 ^ 6 - 1
+</code></pre>
 
     </div>
     <div class='solution' id='011'>
@@ -225,25 +247,28 @@ primesTo n <span class="fu">=</span> eratos [<span class="dv">2</span> <span cla
         </a>
       </h2>
       <p>We’re going to want to store our grid as a two dimensional <a href="https://hackage.haskell.org/package/array-0.5.2.0/docs/Data-Array.html">Array</a>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, bounds, listArray, (!))
-<span class="kw">import </span><span class="dt">Data.Ix</span> (inRange, range)
+<pre><code>import Data.Array (Array, bounds, listArray, (!))
+import Data.Ix (inRange, range)
 
-<span class="kw">type</span> <span class="dt">Grid</span> <span class="fu">=</span> <span class="dt">Array</span> (<span class="dt">Int</span>, <span class="dt">Int</span>) <span class="dt">Integer</span></code></pre></div>
+type Grid = Array (Int, Int) Integer
+</code></pre>
 <p>Given some grid we can get all of the products of four adjacent elements as follows.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">adjacentProducts ::</span> <span class="dt">Grid</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-adjacentProducts grid <span class="fu">=</span>
-  [ product <span class="fu">$</span> map (grid <span class="fu">!</span>) is
-  <span class="fu">|</span> (x, y) <span class="ot">&lt;-</span> range <span class="fu">$</span> bounds grid
-  , (dx, dy) <span class="ot">&lt;-</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="fu">-</span><span class="dv">1</span>)]
-  , <span class="kw">let</span> is <span class="fu">=</span> [(x <span class="fu">+</span> k <span class="fu">*</span> dx, y <span class="fu">+</span> k <span class="fu">*</span> dy) <span class="fu">|</span> k <span class="ot">&lt;-</span> [<span class="dv">0</span> <span class="fu">..</span> <span class="dv">3</span>]]
+<pre><code>adjacentProducts :: Grid -&gt; [Integer]
+adjacentProducts grid =
+  [ product $ map (grid !) is
+  | (x, y) &lt;- range $ bounds grid
+  , (dx, dy) &lt;- [(1, 0), (0, 1), (1, 1), (1, -1)]
+  , let is = [(x + k * dx, y + k * dy) | k &lt;- [0 .. 3]]
   , all (inRange (bounds grid)) is
-  ]</code></pre></div>
+  ]
+</code></pre>
 <p>There’s quite a lot going on here so let’s walk through it. We’re taking each index <code>i</code> in the grid, and then for each possible direction, we’re calculating the four adjacent indices gotten by starting at <code>i</code> and moving in that direction – zero to three times. Finally we’re just checking that each of the indices is within our grid and extracting the actual product of the elements at these positions.</p>
 <p>All that remains is to write a function for building a <code>Grid</code> from the raw input string, and plumb everything together to find the maximum product.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">mkGrid ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Grid</span>
-mkGrid <span class="fu">=</span> listArray ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">19</span>, <span class="dv">19</span>)) <span class="fu">.</span> map read <span class="fu">.</span> words
+<pre><code>mkGrid :: String -&gt; Grid
+mkGrid = listArray ((0, 0), (19, 19)) . map read . words
 
-s011 <span class="fu">=</span> maximum <span class="fu">.</span> adjacentProducts <span class="fu">.</span> mkGrid <span class="fu">&lt;$&gt;</span> readFile <span class="st">&quot;data/011&quot;</span></code></pre></div>
+s011 = maximum . adjacentProducts . mkGrid &lt;$&gt; readFile &quot;data/011&quot;
+</code></pre>
 
     </div>
     <div class='solution' id='012'>
@@ -258,19 +283,23 @@ s011 <span class="fu">=</span> maximum <span class="fu">.</span> adjacentProduct
         </a>
       </h2>
       <p>First we’re going to need a function for calculating divisors. We’ll just check each potential divisor up to the square root, adding a pair of divisors at a time (aside from when <code>n</code> is square).</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">intSqrt ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
-intSqrt <span class="fu">=</span> floor <span class="fu">.</span> sqrt <span class="fu">.</span> fromIntegral</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">divisors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-divisors n <span class="fu">=</span>
+<pre><code>intSqrt :: Integer -&gt; Integer
+intSqrt = floor . sqrt . fromIntegral
+
+divisors :: Integer -&gt; [Integer]
+divisors n =
   [ d&#39;
-  <span class="fu">|</span> d <span class="ot">&lt;-</span> filter ((<span class="fu">==</span> <span class="dv">0</span>) <span class="fu">.</span> mod n) [<span class="dv">1</span> <span class="fu">..</span> intSqrt n]
-  , d&#39; <span class="ot">&lt;-</span> <span class="kw">if</span> d <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> n <span class="kw">then</span> [d] <span class="kw">else</span> [d, div n d]
-  ]</code></pre></div>
+  | d &lt;- filter ((== 0) . mod n) [1 .. intSqrt n]
+  , d&#39; &lt;- if d ^ 2 == n then [d] else [d, div n d]
+  ]
+</code></pre>
 <p>The list of all triangular numbers is a neat scan.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">triangles ::</span> [<span class="dt">Integer</span>]
-triangles <span class="fu">=</span> scanl1 (<span class="fu">+</span>) [<span class="dv">0</span> <span class="fu">..</span>]</code></pre></div>
+<pre><code>triangles :: [Integer]
+triangles = scanl1 (+) [0 ..]
+</code></pre>
 <p>Finally just find the first triangular number with more than 500 divisors.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s012 <span class="fu">=</span> head <span class="fu">$</span> filter ((<span class="fu">&gt;</span> <span class="dv">500</span>) <span class="fu">.</span> length <span class="fu">.</span> divisors) <span class="fu">$</span> triangles</code></pre></div>
+<pre><code>s012 = head $ filter ((&gt; 500) . length . divisors) triangles
+</code></pre>
 
     </div>
     <div class='solution' id='013'>
@@ -284,11 +313,11 @@ triangles <span class="fu">=</span> scanl1 (<span class="fu">+</span>) [<span cl
           013
         </a>
       </h2>
-      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="dt">This</span> one is trivial<span class="fu">.</span>
-
-s013 <span class="fu">=</span>
-  take <span class="dv">10</span> <span class="fu">.</span> show <span class="fu">.</span> sum <span class="fu">.</span> map read <span class="fu">.</span> lines <span class="fu">&lt;$&gt;</span>
-  readFile <span class="st">&quot;data/013&quot;</span></code></pre></div>
+      <p>This one is trivial.</p>
+<pre><code>s013 =
+  take 10 . show . sum . map read . lines &lt;$&gt;
+  readFile &quot;data/013&quot;
+</code></pre>
 
     </div>
     <div class='solution' id='014'>
@@ -302,25 +331,28 @@ s013 <span class="fu">=</span>
           014
         </a>
       </h2>
-      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, assocs, listArray, (!))
-<span class="kw">import </span><span class="dt">Data.List</span> (maximumBy)
-<span class="kw">import </span><span class="dt">Data.Ord</span> (comparing)</code></pre></div>
+      <pre><code>import Data.Array (Array, assocs, listArray, (!))
+import Data.List (maximumBy)
+import Data.Ord (comparing)
+</code></pre>
 <p>It’s tempting to write a function to calculate the Collatz length of a given integer, and then to map that over every integer in the range to find our maximum. However, if, for example, we already know the Collatz length of 20, and we want to know the Collatz length of 40, it is unnecessary to recalculate the Collatz length of 20. We can do a lot better by calculating every Collatz length we care about together, and referencing values we already know.</p>
 <p>To that end, the following function populates an array of the Collatz lengths of all the numbers from 1 to its input.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">collatzLengths ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Array</span> <span class="dt">Integer</span> <span class="dt">Integer</span>
-collatzLengths n <span class="fu">=</span> memo
-  <span class="kw">where</span>
-    memo <span class="fu">=</span> listArray (<span class="dv">1</span>, n) [collatzLength m <span class="fu">|</span> m <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> n]]
-    collatzLength <span class="dv">1</span> <span class="fu">=</span> <span class="dv">1</span>
+<pre><code>collatzLengths :: Integer -&gt; Array Integer Integer
+collatzLengths n = memo
+  where
+    memo = listArray (1, n) [collatzLength m | m &lt;- [1 .. n]]
+    collatzLength 1 = 1
     collatzLength m
-      <span class="fu">|</span> k <span class="fu">&lt;=</span> n <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> memo <span class="fu">!</span> k
-      <span class="fu">|</span> k <span class="fu">&gt;</span> n <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> collatzLength k
-      <span class="kw">where</span>
-        k <span class="fu">=</span> <span class="kw">if</span> even m <span class="kw">then</span> div m <span class="dv">2</span> <span class="kw">else</span> <span class="dv">3</span> <span class="fu">*</span> m <span class="fu">+</span> <span class="dv">1</span></code></pre></div>
+      | k &lt;= n = 1 + memo ! k
+      | k &gt; n = 1 + collatzLength k
+      where
+        k = if even m then div m 2 else 3 * m + 1
+</code></pre>
 <p><code>memo</code> is lazily populated, and defers to <code>collatzLength</code>, but once we have calculated <code>collatzLength m</code> once, we can just look it up in <code>memo</code> on subsequent calls.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s014 <span class="fu">=</span>
-  fst <span class="fu">$</span> maximumBy (comparing snd) <span class="fu">$</span> assocs <span class="fu">$</span>
-  collatzLengths <span class="fu">$</span> <span class="dv">10</span> <span class="fu">^</span> <span class="dv">6</span> <span class="fu">-</span> <span class="dv">1</span></code></pre></div>
+<pre><code>s014 =
+  fst $ maximumBy (comparing snd) $ assocs $
+  collatzLengths $ 10 ^ 6 - 1
+</code></pre>
 
     </div>
     <div class='solution' id='015'>
@@ -335,25 +367,25 @@ collatzLengths n <span class="fu">=</span> memo
         </a>
       </h2>
       <p>This is a one liner with some combinatorics, but let’s solve it in a slightly more interesting way. Imagine labelling each point in our lattice with the number of routes that end at that point. (Indexing from <code>(0, 0)</code> in the top left corner.)</p>
-<ul>
-<li><p>Every point at the top or left edge of the lattice has precisely one route to it (consisting of just left or just down repeatedly).</p></li>
-<li><p>For every other point, <code>(x, y)</code>, each route that ends at <code>(x, y)</code> must pass through either the point immediately above or immediately to the right, so the number of routes to <code>(x, y)</code> is the sum of the number of routes to <code>(x -   1, y)</code> and the number of routes to <code>(x, y - 1)</code>. The implementation then is a straightforward recursion, which we memoize for efficiency.</p></li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Array</span> (<span class="dt">Array</span>, listArray, range, (!))
+<p>Every point at the top or left edge of the lattice has precisely one route to it (consisting of just left or just down repeatedly).</p>
+<p>For every other point, <code>(x, y)</code>, each route that ends at <code>(x, y)</code> must pass through either the point immediately above or immediately to the right, so the number of routes to <code>(x, y)</code> is the sum of the number of routes to <code>(x - 1, y)</code> and the number of routes to <code>(x, y - 1)</code>. The implementation then is a straightforward recursion, which we memoize for efficiency.</p>
+<pre><code>import Data.Array (Array, listArray, range, (!))
 
 lattice
-<span class="ot">  ::</span> ((<span class="dt">Integer</span>, <span class="dt">Integer</span>), (<span class="dt">Integer</span>, <span class="dt">Integer</span>))
-  <span class="ot">-&gt;</span> <span class="dt">Array</span> (<span class="dt">Integer</span>, <span class="dt">Integer</span>) <span class="dt">Integer</span>
-lattice ix <span class="fu">=</span> memo
-  <span class="kw">where</span>
-    memo <span class="fu">=</span> listArray ix [lattice&#39; i <span class="fu">|</span> i <span class="ot">&lt;-</span> range ix]
+  :: ((Integer, Integer), (Integer, Integer))
+  -&gt; Array (Integer, Integer) Integer
+lattice ix = memo
+  where
+    memo = listArray ix [lattice&#39; i | i &lt;- range ix]
     lattice&#39; (x, y)
-      <span class="fu">|</span> x <span class="fu">==</span> <span class="dv">0</span> <span class="fu">||</span> y <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> <span class="dv">1</span>
-      <span class="fu">|</span> otherwise <span class="fu">=</span> memo <span class="fu">!</span> (x <span class="fu">-</span> <span class="dv">1</span>, y) <span class="fu">+</span> memo <span class="fu">!</span> (x, y <span class="fu">-</span> <span class="dv">1</span>)
+      | x == 0 || y == 0 = 1
+      | otherwise = memo ! (x - 1, y) + memo ! (x, y - 1)
 
-s015 <span class="fu">=</span> lattice ((<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">20</span>, <span class="dv">20</span>)) <span class="fu">!</span> (<span class="dv">20</span>, <span class="dv">20</span>)</code></pre></div>
+s015 = lattice ((0, 0), (20, 20)) ! (20, 20)
+</code></pre>
 <p>There’s an outrageously neat solution on <a href="https://wiki.haskell.org/Euler_problems/11_to_20">the Haskell wiki</a> that works in a very similar way, but makes a couple more logical jumps so is slightly harder to unpack. I’ll leave it here becuse it’s awesome.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s015&#39; <span class="fu">=</span> iterate (scanl1 (<span class="fu">+</span>)) (repeat <span class="dv">1</span>) <span class="fu">!!</span> <span class="dv">20</span> <span class="fu">!!</span> <span class="dv">20</span></code></pre></div>
+<pre><code>s015&#39; = iterate (scanl1 (+)) (repeat 1) !! 20 !! 20
+</code></pre>
 
     </div>
     <div class='solution' id='016'>
@@ -368,9 +400,10 @@ s015 <span class="fu">=</span> lattice ((<span class="dv">0</span>, <span class=
         </a>
       </h2>
       <p>This one is pretty trivial.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
+<pre><code>import Data.Char (digitToInt)
 
-s016 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <span class="fu">$</span> show <span class="fu">$</span> <span class="dv">2</span> <span class="fu">^</span> <span class="dv">1000</span></code></pre></div>
+s016 = sum $ map digitToInt $ show $ 2 ^ 1000
+</code></pre>
 
     </div>
     <div class='solution' id='017'>
@@ -385,36 +418,37 @@ s016 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <spa
         </a>
       </h2>
       <p>This is pretty dull, but it works.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">say ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">String</span>
+<pre><code>say :: Integer -&gt; String
 say n
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">1</span> <span class="fu">=</span> <span class="st">&quot;one&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">2</span> <span class="fu">=</span> <span class="st">&quot;two&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">3</span> <span class="fu">=</span> <span class="st">&quot;three&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">4</span> <span class="fu">=</span> <span class="st">&quot;four&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">5</span> <span class="fu">=</span> <span class="st">&quot;five&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">6</span> <span class="fu">=</span> <span class="st">&quot;six&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">7</span> <span class="fu">=</span> <span class="st">&quot;seven&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">8</span> <span class="fu">=</span> <span class="st">&quot;eight&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">9</span> <span class="fu">=</span> <span class="st">&quot;nine&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">10</span> <span class="fu">=</span> <span class="st">&quot;ten&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">11</span> <span class="fu">=</span> <span class="st">&quot;eleven&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">12</span> <span class="fu">=</span> <span class="st">&quot;twelve&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">13</span> <span class="fu">=</span> <span class="st">&quot;thirteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">15</span> <span class="fu">=</span> <span class="st">&quot;fifteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">18</span> <span class="fu">=</span> <span class="st">&quot;eighteen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">20</span> <span class="fu">=</span> say (mod n <span class="dv">10</span>) <span class="fu">++</span> <span class="st">&quot;teen&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">20</span> <span class="fu">=</span> <span class="st">&quot;twenty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">30</span> <span class="fu">=</span> <span class="st">&quot;thirty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">40</span> <span class="fu">=</span> <span class="st">&quot;forty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">50</span> <span class="fu">=</span> <span class="st">&quot;fifty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">80</span> <span class="fu">=</span> <span class="st">&quot;eighty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">100</span> <span class="fu">&amp;&amp;</span> mod n <span class="dv">10</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> say (div n <span class="dv">10</span>) <span class="fu">++</span> <span class="st">&quot;ty&quot;</span>
-  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">100</span> <span class="fu">=</span> say (div n <span class="dv">10</span> <span class="fu">*</span> <span class="dv">10</span>) <span class="fu">++</span> say (mod n <span class="dv">10</span>)
-  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">1000</span> <span class="fu">&amp;&amp;</span> mod n <span class="dv">100</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> say (div n <span class="dv">100</span>) <span class="fu">++</span> <span class="st">&quot;hundred&quot;</span>
-  <span class="fu">|</span> n <span class="fu">&lt;</span> <span class="dv">1000</span> <span class="fu">=</span> say (div n <span class="dv">100</span> <span class="fu">*</span> <span class="dv">100</span>) <span class="fu">++</span> <span class="st">&quot;and&quot;</span> <span class="fu">++</span> say (mod n <span class="dv">100</span>)
-  <span class="fu">|</span> n <span class="fu">==</span> <span class="dv">1000</span> <span class="fu">=</span> <span class="st">&quot;onethousand&quot;</span>
+  | n == 1 = &quot;one&quot;
+  | n == 2 = &quot;two&quot;
+  | n == 3 = &quot;three&quot;
+  | n == 4 = &quot;four&quot;
+  | n == 5 = &quot;five&quot;
+  | n == 6 = &quot;six&quot;
+  | n == 7 = &quot;seven&quot;
+  | n == 8 = &quot;eight&quot;
+  | n == 9 = &quot;nine&quot;
+  | n == 10 = &quot;ten&quot;
+  | n == 11 = &quot;eleven&quot;
+  | n == 12 = &quot;twelve&quot;
+  | n == 13 = &quot;thirteen&quot;
+  | n == 15 = &quot;fifteen&quot;
+  | n == 18 = &quot;eighteen&quot;
+  | n &lt; 20 = say (mod n 10) ++ &quot;teen&quot;
+  | n == 20 = &quot;twenty&quot;
+  | n == 30 = &quot;thirty&quot;
+  | n == 40 = &quot;forty&quot;
+  | n == 50 = &quot;fifty&quot;
+  | n == 80 = &quot;eighty&quot;
+  | n &lt; 100 &amp;&amp; mod n 10 == 0 = say (div n 10) ++ &quot;ty&quot;
+  | n &lt; 100 = say (div n 10 * 10) ++ say (mod n 10)
+  | n &lt; 1000 &amp;&amp; mod n 100 == 0 = say (div n 100) ++ &quot;hundred&quot;
+  | n &lt; 1000 = say (div n 100 * 100) ++ &quot;and&quot; ++ say (mod n 100)
+  | n == 1000 = &quot;onethousand&quot;
 
-s017 <span class="fu">=</span> sum <span class="fu">$</span> map (length <span class="fu">.</span> say) <span class="fu">$</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">1000</span>]</code></pre></div>
+s017 = sum $ map (length . say) [1 .. 1000]
+</code></pre>
 
     </div>
     <div class='solution' id='018'>
@@ -429,15 +463,17 @@ s017 <span class="fu">=</span> sum <span class="fu">$</span> map (length <span c
         </a>
       </h2>
       <p>We’ll represent the triangle as a nested list. Actually calculating the maximum total from top to bottom can be done in one pass, folding from bottom to top and accumulating the maximum totals.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">maxTotal ::</span> [[<span class="dt">Integer</span>]] <span class="ot">-&gt;</span> <span class="dt">Integer</span>
-maxTotal <span class="fu">=</span>
-  head <span class="fu">.</span> foldr1 (\row acc <span class="ot">-&gt;</span> zipWith3 newTotal row acc (tail acc))
-  <span class="kw">where</span>
-    newTotal new left right <span class="fu">=</span> new <span class="fu">+</span> max left right</code></pre></div>
+<pre><code>maxTotal :: [[Integer]] -&gt; Integer
+maxTotal =
+  head . foldr1 (\row acc -&gt; zipWith3 newTotal row acc (tail acc))
+  where
+    newTotal new left right = new + max left right
+</code></pre>
 <p>Building the triangle and applying <code>maxTotal</code>.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s018 <span class="fu">=</span>
-  maxTotal <span class="fu">.</span> map (map read) <span class="fu">.</span> map words <span class="fu">.</span> lines <span class="fu">&lt;$&gt;</span>
-  readFile <span class="st">&quot;data/018&quot;</span></code></pre></div>
+<pre><code>s018 =
+  maxTotal . map (map read . words) . lines &lt;$&gt;
+  readFile &quot;data/018&quot;
+</code></pre>
 
     </div>
     <div class='solution' id='019'>
@@ -452,11 +488,13 @@ maxTotal <span class="fu">=</span>
         </a>
       </h2>
       <p>We can make our life a lot easier by using <code>Data.Time</code> rather than re-inventing the wheel.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Time.Calendar</span> (fromGregorian)
-<span class="kw">import </span><span class="dt">Data.Time.Calendar.WeekDate</span> (toWeekDate)</code></pre></div>
+<pre><code>import Data.Time.Calendar (fromGregorian)
+import Data.Time.Calendar.WeekDate (toWeekDate)
+</code></pre>
 <p>Then we can just count Sundays over a range of days.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s019 <span class="fu">=</span> length <span class="fu">$</span> filter ((\(_, _, d) <span class="ot">-&gt;</span> d <span class="fu">==</span> <span class="dv">7</span>) <span class="fu">.</span> toWeekDate) <span class="fu">$</span>
-  [fromGregorian y m <span class="dv">1</span> <span class="fu">|</span> y <span class="ot">&lt;-</span> [<span class="dv">1901</span> <span class="fu">..</span> <span class="dv">2000</span>], m <span class="ot">&lt;-</span> [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">12</span>]]</code></pre></div>
+<pre><code>s019 = length $ filter ((\(_, _, d) -&gt; d == 7) . toWeekDate)
+  [fromGregorian y m 1 | y &lt;- [1901 .. 2000], m &lt;- [1 .. 12]]
+</code></pre>
 
     </div>
     <div class='solution' id='020'>
@@ -471,9 +509,10 @@ maxTotal <span class="fu">=</span>
         </a>
       </h2>
       <p>An easy one liner.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.Char</span> (digitToInt)
+<pre><code>import Data.Char (digitToInt)
 
-s020 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <span class="fu">$</span> show <span class="fu">$</span> product [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">100</span>]</code></pre></div>
+s020 = sum $ map digitToInt $ show $ product [1 .. 100]
+</code></pre>
 
     </div>
     <div class='solution' id='021'>
@@ -488,27 +527,33 @@ s020 <span class="fu">=</span> sum <span class="fu">$</span> map digitToInt <spa
         </a>
       </h2>
       <p>We’ll modifying our <code>divisors</code> function from <a href="#012">solution 012</a> to find only the proper divisors of a given integer.</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">intSqrt ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
-intSqrt <span class="fu">=</span> floor <span class="fu">.</span> sqrt <span class="fu">.</span> fromIntegral
+<pre><code>intSqrt :: Integer -&gt; Integer
+  intSqrt = floor . sqrt . fromIntegral
 
-<span class="ot">properDivisors ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Integer</span>]
-properDivisors n <span class="fu">=</span> <span class="dv">1</span> <span class="fu">:</span>
+properDivisors :: Integer -&gt; [Integer]
+properDivisors n = 1 :
   [ d&#39;
-  <span class="fu">|</span> d <span class="ot">&lt;-</span> filter ((<span class="fu">==</span> <span class="dv">0</span>) <span class="fu">.</span> mod n) [<span class="dv">2</span> <span class="fu">..</span> intSqrt n]
-  , d&#39; <span class="ot">&lt;-</span> <span class="kw">if</span> d <span class="fu">^</span> <span class="dv">2</span> <span class="fu">==</span> n <span class="kw">then</span> [d] <span class="kw">else</span> [d, div n d]
-  ]</code></pre></div>
+  | d &lt;- filter ((== 0) . mod n) [2 .. intSqrt n]
+  , d&#39; &lt;- if d ^ 2 == n then [d] else [d, div n d]
+  ]
+</code></pre>
 <p>Then <code>d</code> as defined in the problem is just</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">d ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Integer</span>
-d <span class="fu">=</span> sum <span class="fu">.</span> properDivisors</code></pre></div>
+<pre><code>d :: Integer -&gt; Integer
+d = sum . properDivisors
+</code></pre>
 <p><code>n</code> is amicable if there is some <code>m</code> such that</p>
-<pre><code>m /= n &amp;&amp; d n == m &amp;&amp; d m == n</code></pre>
+<pre><code>m /= n &amp;&amp; d n == m &amp;&amp; d m == n
+</code></pre>
 <p>or, substituting <code>m</code> for <code>d n</code></p>
-<pre><code>d n /= n &amp;&amp; d (d n) == n</code></pre>
+<pre><code>d n /= n &amp;&amp; d (d n) == n
+</code></pre>
 <p>so we can define</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">isAmicable ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
-isAmicable n <span class="fu">=</span> d n <span class="fu">/=</span> n <span class="fu">&amp;&amp;</span> d (d n) <span class="fu">==</span> n</code></pre></div>
+<pre><code>isAmicable :: Integer -&gt; Bool
+isAmicable n = d n /= n &amp;&amp; d (d n) == n
+</code></pre>
 <p>and the solution is just</p>
-<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">s021 <span class="fu">=</span> sum <span class="fu">$</span> filter isAmicable [<span class="dv">1</span> <span class="fu">..</span> <span class="dv">10000</span>]</code></pre></div>
+<pre><code>s021 = sum $ filter isAmicable [1 .. 10000]
+</code></pre>
 
     </div>
 </body>
