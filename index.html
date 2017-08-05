@@ -573,7 +573,7 @@ import Data.List.Index (imap)
 </code></pre>
 <p>A function to score each index–word pair is straight forward.</p>
 <pre><code>score :: Int -&gt; String -&gt; Int
-score i name = (i + 1) * (sum $ map (\c -&gt; ord c - 64) name)
+score i name = (i + 1) * sum (map (\c -&gt; ord c - 64) name)
 </code></pre>
 <p>Then the <code>imap</code> function from <code>Data.List.Index</code> makes short work of calculating the total.</p>
 <pre><code>s022 = do
