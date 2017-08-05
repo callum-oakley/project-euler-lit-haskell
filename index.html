@@ -556,6 +556,32 @@ isAmicable n = d n /= n &amp;&amp; d (d n) == n
 </code></pre>
 
     </div>
+    <div class='solution' id='022'>
+      <h2>
+        <a class='problem-title' href='#022'>
+          <span class='hash'># </span>
+          Names scores
+        </a>
+        <a class='problem-statement'
+            href='https://projecteuler.net/problem=022'>
+          022
+        </a>
+      </h2>
+      <pre><code>import Data.Char (ord)
+import Data.List (sort)
+import Data.List.Index (imap)
+</code></pre>
+<p>A function to score each index–word pair is straight forward.</p>
+<pre><code>score :: Int -&gt; String -&gt; Int
+score i name = (i + 1) * (sum $ map (\c -&gt; ord c - 64) name)
+</code></pre>
+<p>Then the <code>imap</code> function from <code>Data.List.Index</code> makes short work of calculating the total.</p>
+<pre><code>s022 = do
+  raw &lt;- readFile &quot;data/022&quot;
+  return $ sum $ imap score $ sort $ read $ &quot;[&quot; ++ raw ++ &quot;]&quot;
+</code></pre>
+
+    </div>
 </body>
 </html>
 
