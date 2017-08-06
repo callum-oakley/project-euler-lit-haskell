@@ -2,7 +2,7 @@ import Data.Char (ord)
 import Data.List (sort)
 import Data.List.Index (imap)
 
--- A function to score each index–word pair is straight forward.
+-- A function to score each index–word pair is straightforward.
 
 score :: Int -> String -> Int
 score i name = (i + 1) * sum (map (\c -> ord c - 64) name)

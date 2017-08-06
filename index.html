@@ -571,7 +571,7 @@ isAmicable n = d n /= n &amp;&amp; d (d n) == n
 import Data.List (sort)
 import Data.List.Index (imap)
 </code></pre>
-<p>A function to score each index–word pair is straight forward.</p>
+<p>A function to score each index–word pair is straightforward.</p>
 <pre><code>score :: Int -&gt; String -&gt; Int
 score i name = (i + 1) * sum (map (\c -&gt; ord c - 64) name)
 </code></pre>
